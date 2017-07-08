@@ -19,7 +19,17 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 ################################################################################
-# Subdirectories
-add_subdirectory(core)      # The sparky core library.
-add_subdirectory(scripting) # The sparky scripting library.
-add_subdirectory(utilities) # The sparky utilities library.
+# File directories
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/sparky/scripting")
+set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/scripting")
+
+################################################################################
+# Header and source files
+set(HEADER_FILES "${INCLUDE_DIR}/scripting_manager.hpp")
+
+set(SOURCE_FILES "${SOURCE_DIR}/scripting_manager.cpp")
+
+################################################################################
+# Library creation
+add_library(sparky_scripting ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(sparky_scripting PROPERTIES LINKER_LANGUAGE CXX)

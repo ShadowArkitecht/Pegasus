@@ -27,22 +27,25 @@
 // C++ includes
 //==================== 
 #include <unordered_map> // Store the factories in a map.
+#include <memory>        // Factories stored as unique pointers.
+#include <type_traits>   // Comparing objects types with static asserts.
 
 //==================== 
 // Sparky includes
 //====================
+#include <sparky/utilities/singleton.hpp> // Inherits from the singleton class.
 #include <sparky/utilities/iasset_factory.hpp> // Contains a list of factories.
-#include <sparky/utilities/no_factory_found_exception.hpp> // No factory found.
+#include <sparky/utilities/exceptions/no_factory_found_exception.hpp> // No factory found.
 
 namespace sparky
 {
-    class ResourceManager final
+    class ResourceManager final : public Singleton<ResourceManager>
     {
     private:
         /** A map of all registered asset factories within the manager. */
-        std::unordered_map<std::type_index, IAssetFactory*> m_factories;
+        std::unordered_map<std::type_index, std::unique_ptr<IAssetFactory>>m_factories;
 
-    public:
+    private:
         //==================== 
         // Ctors and dtor
         //==================== 
@@ -55,14 +58,14 @@ namespace sparky
          */
         explicit ResourceManager();
 
+    public:
         /**
-         * @brief Destructor for the ResourceManager.
+         * @brief Default destructor.
          *
-         * The ResourceManager is responsible for the lifetime of the registered
-         * factories. When the destructor is called, all of the factories will
-         * be de-allocated and the map cleared.
+         * The factories are stored as unique pointers so will be de-allocated automatically
+         * when the resource manager's default destructor is invoked. 
          */
-        ~ResourceManager();
+        ~ResourceManager() = default;
 
         //==================== 
         // Getters and setters 
@@ -105,10 +108,27 @@ namespace sparky
          * or is equal to nullptr.
          */
         void registerFactory(IAssetFactory* pFactory);
+        
+        /**
+         * @brief Registers a factory with the manager with the factory class type.
+         *
+         * When a factory is registered with the ResourceManager, it will be
+         * used to construct objects of a specific type when a resource is
+         * requested from the manager, depending on the type requested. Only one
+         * factory of each type can be registered with the manager, an exception
+         * will be thrown if a duplicate is detected or the factory is null.
+         *
+         * @param pFactory The factory to register with the manager.
+         *
+         * @throws std::runtime_error If the factory has already been registered
+         * or is equal to nullptr.
+         */
+        template <typename T>
+        void registerFactory();
     };
 
     //==================== 
-    // Methods
+    // Getters and setters 
     //==================== 
     /**********************************************************/
     template <typename T>
@@ -119,13 +139,32 @@ namespace sparky
         // No factory was found, throw the exception.
         if (itr == m_factories.end())
         {
-            // TODO(Ben): Throw a NoFactoryFoundException.
 			throw NoFactoryFoundException("No factory for object type has been registered");
         }
 
         // Attempt to load the resource with the factory.
         return itr->second->load(name);
     } 
+ 
+    //==================== 
+    // Methods
+    //====================    
+    /**********************************************************/
+    template <typename T>
+    void ResourceManager::registerFactory()
+    {
+        static_assert(std::is_base_of<IAssetFactory, T>::value, "T must be a type of IAssetFactory.");
+
+        auto factory = std::make_unique<T>();
+        auto itr = m_factories.find(factory->getType());
+
+        if (itr != m_factories.end())
+        {
+            // TODO(Ben): Throw an exception.
+        }
+
+        m_factories.insert({ factory->getType(), factory });
+    }
 
 } // namespace sparky
 

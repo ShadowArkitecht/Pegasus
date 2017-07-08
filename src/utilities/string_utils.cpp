@@ -21,53 +21,50 @@
 */
 
 //====================
+// C++ includes
+//====================
+#include <algorithm> // Lambda methods.
+#include <cctype> // Checking if a character only contains white-space.
+
+//====================
 // Sparky includes
 //====================
-#include <sparky/utilities/iasset_factory.hpp> // class declaration.
+#include <sparky/utilities/string_utils.hpp> // Class declaration.
 
 namespace sparky
 {
 	//====================
-	// Ctors and dtor
+	// Methods
 	//====================
 	/**********************************************************/
-	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_type(type), m_threshold(threshold)
+	std::string StringUtils::leftTrim(const std::string& str)
 	{
-		// Empty.
+		std::string s = str;
+		s.erase(std::begin(s), std::find_if(std::begin(s), std::end(s), [](int ch) {
+			return !std::isspace(ch);
+		}));
+
+		return s;
 	}
-	
-	//====================
-	// Getters and setters
-	//====================
-	/**********************************************************/
-    ISerializableService* IAssetFactory::getService() const
-    {
-        return m_service.get();
-    }
 
 	/**********************************************************/
-    void IAssetFactory::setService(ISerializableService* pService)
-    {
-        m_service.reset(pService);
-    }
-	
-	/**********************************************************/
-	const std::type_index& IAssetFactory::getType() const
+	std::string StringUtils::rightTrim(const std::string& str)
 	{
-		return m_type;
+		std::string s = str;
+		s.erase(std::find_if(std::rbegin(s), std::rend(s), [](int ch) {
+			return !std::isspace(ch);
+		}).base(), std::end(s));
+
+		return s;
 	}
-	
+
 	/**********************************************************/
-	std::size_t IAssetFactory::getThreshold() const
+	std::string StringUtils::trim(const std::string& str)
 	{
-		return m_threshold;
+		std::string s = StringUtils::leftTrim(str);
+		s = StringUtils::rightTrim(s);
+
+		return s;
 	}
-	
-	/**********************************************************/
-	void IAssetFactory::setThreshold(std::size_t threshold)
-	{
-		m_threshold = threshold;
-	}
-	
+
 } // namespace sparky

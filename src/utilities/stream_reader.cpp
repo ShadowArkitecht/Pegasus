@@ -22,32 +22,63 @@
 
 //==================== 
 // Sparky includes
-//====================  
-#include <sparky/utilities/no_factory_found_exception.hpp> // Class declaration.
+//==================== 
+#include <sparky/utilities/stream_reader.hpp> // Class declaration.
 
 namespace sparky
 {
 	//==================== 
 	// Ctors and dtor
-	//====================  
+	//==================== 
 	/**********************************************************/
-	NoFactoryFoundException::NoFactoryFoundException(const char* msg)
-		: std::exception(msg)
+	StreamReader::StreamReader()
+		: Reader(), m_file(), m_line()
 	{
+		// Empty.
+	}
+	
+	/**********************************************************/
+	StreamReader::StreamReader(const std::string& filename)
+		: Reader(), m_file(), m_line()
+	{
+		this->open(filename);
 	}
 
 	/**********************************************************/
-	NoFactoryFoundException::NoFactoryFoundException(const std::string& msg)
-		: std::exception(msg.c_str())
+	StreamReader::~StreamReader()
 	{
+		m_file.close();
+	}
+
+	//==================== 
+	// Getters and setters
+	//==================== 
+	/**********************************************************/
+	std::istream& StreamReader::hasNext()
+	{
+		return std::getline(m_file, m_line);
+	}
+
+	/**********************************************************/
+	const std::string& StreamReader::getLine() const
+	{
+		return m_line;
 	}
 
 	//==================== 
 	// Methods
-	//====================  
+	//==================== 
 	/**********************************************************/
-	const char* NoFactoryFoundException::what() const
+	void StreamReader::open(const std::string& filename) // override
 	{
-		return std::exception::what();
+		m_file.open(filename);
+		if (m_file.fail())
+		{
+			m_failed = true;
+			return;
+		}
+
+		m_failed = false;
 	}
-}
+
+} // namespace sparky

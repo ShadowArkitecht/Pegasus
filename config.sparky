@@ -1,0 +1,53 @@
+# Sparky Engine
+# 2017 - Benjamin Carter (bencarterdev@outlook.com)
+#
+# This software is provided 'as-is', without any express or implied warranty.
+# In no event will the authors be held liable for any damages arising from the use of this software.
+#
+# Permission is granted to anyone to use this software for any purpose,
+# including commercial applications, and to alter it and redistribute it freely,
+# subject to the following restrictions:
+#
+# 1. The origin of this software must not be misrepresented;
+#    you must not claim that you wrote the original software.
+#    If you use this software in a product, an acknowledgement
+#    in the product documentation would be appreciated but is not required.
+#
+# 2. Altered source versions must be plainly marked as such,
+#    and must not be misrepresented as being the original software.
+#
+# 3. This notice may not be removed or altered from any source distribution.
+
+
+# The core header controls core information that is provided to the application in order to run correctly. Commonly if variables are
+# removed from this section, the engine will not behave as intended. 
+[Core]
+# Used to specify the file location of the Resource.xxx file. The application will not run without a Resources.xxx file.
+# The file extension for the resources file must match the serialization format defined in the Serialization.resource_format variable.
+resource_file : string = "Resources.lua"
+
+
+# The logging header controls information in relation to how logging is controlled within the application. It contains definitions for which
+# levels of logging are reported throughout the runtime of the application.
+[Logging]
+# Specifies whether info level logging will be logged to the specified log policy.
+info_enabled : boolean = true
+# Specifies whether warning level logging will be logged to the specified log policy.
+warn_enabled : boolean = true
+# Specifies whether error level logging will be logged to the specified log policy.
+error_enabled : boolean = true
+
+
+# The serialization header controls how specific data and objects are de-serialized into a format that the Sparky Engine can utilise.
+# There are three different serialization formats provided:
+#
+#	lua : All data is stored within lua tables, which is extracted upon de-serialization. This is the preferred format as certain additional
+#         Implementation is provided, such as setting values to enumerated values that are bound by the engine. 
+#
+#   xml : All data is stored within different xml tags, which contains data that is extracted upon de-serialization. Xml is the second most
+#         supported serialization format, and is solely utilised when storing messages for dialogue.
+#
+#   json: Currently not supported.
+[Serialization]
+# Specifies the de-serialization format that the Resources.xxx file will use. 
+resource_format : string = "lua"

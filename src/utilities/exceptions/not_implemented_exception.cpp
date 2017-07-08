@@ -20,54 +20,29 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//====================
+//==================== 
 // Sparky includes
-//====================
-#include <sparky/utilities/iasset_factory.hpp> // class declaration.
+//==================== 
+#include <sparky/utilities/exceptions/not_implemented_exception.hpp> // Class declaration.
 
 namespace sparky
 {
-	//====================
+	//==================== 
 	// Ctors and dtor
-	//====================
+	//==================== 
 	/**********************************************************/
-	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_type(type), m_threshold(threshold)
+	NotImplementedException::NotImplementedException(const std::string& msg)
+		: std::exception(msg.c_str())
 	{
-		// Empty.
 	}
 	
-	//====================
-	// Getters and setters
-	//====================
+	//==================== 
+	// Methods
+	//==================== 
 	/**********************************************************/
-    ISerializableService* IAssetFactory::getService() const
-    {
-        return m_service.get();
-    }
-
-	/**********************************************************/
-    void IAssetFactory::setService(ISerializableService* pService)
-    {
-        m_service.reset(pService);
-    }
-	
-	/**********************************************************/
-	const std::type_index& IAssetFactory::getType() const
+	const char* NotImplementedException::what() const
 	{
-		return m_type;
-	}
-	
-	/**********************************************************/
-	std::size_t IAssetFactory::getThreshold() const
-	{
-		return m_threshold;
-	}
-	
-	/**********************************************************/
-	void IAssetFactory::setThreshold(std::size_t threshold)
-	{
-		m_threshold = threshold;
+		return std::exception::what();
 	}
 	
 } // namespace sparky

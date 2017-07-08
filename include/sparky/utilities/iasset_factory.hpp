@@ -26,16 +26,23 @@
 //====================
 // C++ includes
 //====================
-#include <string>    // Stores the name of the factory.
+#include <memory> // The serializable service is stored as a smart pointer.
 #include <typeindex> // Stores the type the factory is registered with.
+#include <string> // Retrieving assets from the resource name.
+
+//==================== 
+// Sparky includes
+//==================== 
+#include <sparky/utilities/non_copyable.hpp> // The factory cannot be copied.
 
 namespace sparky
 {
 	//====================
 	// Forward declarations.
 	//====================
-	class Asset;
-	
+    class ISerializableService;
+    class Asset;
+
 	/**
 	 * @author Benjamin Carter
 	 * 
@@ -56,18 +63,18 @@ namespace sparky
 	 * 
 	 * An implementation of the IAssetFactory abstract class is provided with the TextureFactory class. 
 	 */
-	class IAssetFactory
+	class IAssetFactory : public NonCopyable
 	{
 	private:
 		//====================
 		// Member variables
 		//====================
-		/** The name of the asset factory. Mostly used for debugging purposes. */
-	    std::string     m_name;
+        /** The injected serialization method this factory will utilitize. */
+        std::shared_ptr<ISerializableService> m_service;
 		/** The unique object type that this asset factory is bound to/will produce. */
-	    std::type_index m_type; 
+	    std::type_index                       m_type; 
 		/** The threshold in which un-used resources will be cleared from memory. */
-	    std::size_t     m_threshold;
+	    std::size_t                           m_threshold;
 	    
 	private:
 		//====================
@@ -104,11 +111,10 @@ namespace sparky
 		 * registered with the ResourceManager, it uses the std::type_index to define which resources individual factories
 		 * will be responsible for. Only one factory of a specific type can be registed with the ResourceManager.
 		 * 
-		 * @param name      The name is predominantly used for debugging and logging purposes.
 		 * @param type      The resource type that this asset factory will be bound to when requesting resources.
 		 * @param threshold How many resources can be retained before un-referenced resources will be cleared from memory.
 		 */
-	    explicit IAssetFactory(const std::string& name, const std::type_index& type, std::size_t threshold = 10);
+	    explicit IAssetFactory(const std::type_index& type, std::size_t threshold = 10);
 	    
 	    /**
 	     * @brief Default destructor.
@@ -118,16 +124,30 @@ namespace sparky
 	    //====================
 		// Getters and setters
 		//====================
-	    /**
-	     * @brief Retrieves the name of the asset factory.
-	     * 
-	     * The name is predominantly used for debugging and logging purposes. It helps to narrow down any potential issues
-	     * to particular factory implementations.
-	     * 
-	     * @returns The name of the asset factory.
-	     */
-	    const std::string& getName() const;
-	    
+        /**
+         * @brief Retrieves the serializable service from the factory.
+         *
+         * The serializable service is responsible for de-serializing any external files that this
+         * factory is provided and converted them into a format that the sparky engine can utlitize.
+         * Various different serialization methods are supported so the functionality must be
+         * injected into the factory before use.
+         *
+         * @returns The serializable service injected into this factory.
+         */
+        ISerializableService* getService() const;
+
+        /**
+         * @brief Injects the serializable service into the factory. 
+         *
+         * The serializable service is responsible for de-serializing any external files that this
+         * factory is provided and converted them into a format that the sparky engine can utlitize.
+         * Various different serialization methods are supported so the functionality must be
+         * injected into the factory before use.
+         *
+         * @param service The serializable service to be injected into the factory.
+         */
+        void setService(ISerializableService* pService);
+
 	    /**
 	     * @brief Retrieves the type registed with this factory.
 	     * 

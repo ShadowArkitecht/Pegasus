@@ -37,21 +37,9 @@ namespace sparky
     //====================  
     /**********************************************************/
     ResourceManager::ResourceManager()
-        : m_factories()
+        : Singleton<ResourceManager>(), m_factories()
     {
         // Empty.
-    }
-
-    /**********************************************************/    
-    ResourceManager::~ResourceManager()
-    {
-        // Delete all of the factories.
-        for (auto& factory : m_factories)
-        {
-            delete factory.second;
-        }
-
-        m_factories.clear();
     }
 
     //==================== 
@@ -71,13 +59,11 @@ namespace sparky
         // The factory has already been registered, throw an exception.
         if (itr != m_factories.end())
         {
-            throw std::runtime_error("Attempted to register factory: " +
-                                     pFactory->getName() + 
-                                     " when it is already registered.");
+			// TODO(Ben): Throw exception.
         }
 
         // Register the factory with the manager.
-        m_factories.insert({pFactory->getType(), pFactory });
+        m_factories.insert({ pFactory->getType(), std::unique_ptr<IAssetFactory>(pFactory) });
     }
 
 } // namespace sparky

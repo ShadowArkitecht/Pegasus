@@ -27,10 +27,16 @@
 // C++ includes
 //==================== 
 #include <unordered_map> // Stores all of the resources and their locations.
+#include <memory>        // The serializable service is a smart pointer.
 #include <string>        // Stores the key and value of the resources.
 
 namespace sparky
 {
+	//==================== 
+	// Forward declarations
+	//==================== 
+	class ISerializableService;
+
     /**
      * @author Benjamin Carter
      * 
@@ -48,15 +54,6 @@ namespace sparky
      * This class aids in retrieving resources from the ResourceManager with a
      * simpler naming convention that will not have to rely on hard-coded file
      * directories for caching and retrieval of assets.
-     *
-     * Below is a code example:
-     * @code
-     * // Load the resources from file.
-     * Resources::load(); // This will load the Resources.xml by default.
-     *
-     * // Loads the file location of the base.texture object.
-     * std::string file = Resources::get("base.texture");
-     * @endcode
      */
     class Resources final
     {
@@ -66,6 +63,8 @@ namespace sparky
         //==================== 
         /** Stores all of the file locations of the defined resources.*/
         static std::unordered_map<std::string, std::string> m_resources;
+		/** The unique serializable service type assigned to de-serialize the Resources file. */
+		static std::unique_ptr<ISerializableService>        m_service;
 
     public:
         //==================== 
@@ -80,11 +79,22 @@ namespace sparky
          * @brief Default destructor.
          */
         ~Resources() = default;
-        
 
         //==================== 
         // Getters and setters
         //==================== 
+		/**
+		 * @brief Sets the serializable service for the Resources object.
+		 *
+		 * The serializable service is responsible for the method in which the resources
+		 * file will be de-serialized into a format that the sparky engine can utilise. 
+		 * The serialization type is declared within the sparky initialisation file under the
+		 * [Serialization] header.
+		 *
+		 * @param service The object that the service should be set to.
+		 */
+		 void setService(std::unique_ptr<ISerializableService> service);
+
         /**
          * @brief Retrieves a resources file location.
          *
@@ -99,7 +109,7 @@ namespace sparky
          * 
          * @throws NoResourceException If the resource is not found.
          */
-        static std::string get(const std::string& name);
+        std::string get(const std::string& name) const;
     
         //==================== 
         // Methods
@@ -118,7 +128,7 @@ namespace sparky
          * 
          * @throws NoResourceException Thrown if the file cannot be found. 
          */
-        static void load(const std::string& filename = "Resources.xml");
+        void load(const std::string& filename);
     };
 
 } // namespace sparky

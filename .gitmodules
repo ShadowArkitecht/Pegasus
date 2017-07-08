@@ -4,3 +4,6 @@
 [submodule "lib/pugixml"]
 	path = lib/pugixml
 	url = https://github.com/zeux/pugixml.git
+[submodule "lib/sol2"]
+	path = lib/sol2
+	url = https://github.com/ThePhD/sol2.git

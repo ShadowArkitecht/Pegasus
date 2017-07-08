@@ -23,13 +23,14 @@
 //====================
 // Sparky includes
 //====================
-#include <sparky/core/resources.hpp>                  // Class declaration.
-#include <sparky/utilities/no_resource_exception.hpp> // Throwing exceptions if resource not found.
+#include <sparky/core/resources.hpp>                             // Class declaration.
+#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Throwing exceptions if resource not found.
+#include <sparky/utilities/iserializable_service.hpp>            // De-serialize the resources object.
 
 //====================
 // Library includes
 //====================
-#include <pugixml.hpp>                                // De-serializing the Resources.xml file.
+#include <pugixml.hpp> // De-serializing the Resources.xml file.
 
 namespace sparky
 {
@@ -37,15 +38,21 @@ namespace sparky
 	// Static declaration.
 	//====================
 	std::unordered_map<std::string, std::string> Resources::m_resources;
+	std::unique_ptr<ISerializableService> Resources::m_service;
 
 	//====================
 	// Getters and setters
 	//====================
 	/**********************************************************/
-	std::string Resources::get(const std::string& name/*= "Resources.xml"*/)
+	void Resources::setService(std::unique_ptr<ISerializableService> service)
+	{
+		m_service = std::move(service);
+	}
+
+	/**********************************************************/
+	std::string Resources::get(const std::string& name) const
 	{
 		auto itr = m_resources.find(name);
-
 		if (itr == m_resources.end())
 		{
 			throw NoResourceException("Unable to load file location for resource: " + name);
@@ -60,22 +67,7 @@ namespace sparky
 	/**********************************************************/
 	void Resources::load(const std::string& filename)
 	{
-		// Load the xml document.
-		pugi::xml_document document;
-		pugi::xml_parse_result result = document.load_file(filename.c_str());
-
-		// Check if it was successful.
-		if (!result)
-		{
-			throw NoResourceException("Cannot open resource file: " + filename);
-		}
-
-		// Get the root "Resource" node. 
-		pugi::xml_node root = document.child("Resources");
-		for (auto& resource : root.children("Resource"))
-		{
-			m_resources.insert({ resource.child("Name").child_value() , resource.child("Source").child_value() });
-		}
+		m_resources = m_service->deserializeResources(filename);
 	}
 
 } // namespace sparky

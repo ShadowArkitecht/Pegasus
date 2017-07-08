@@ -20,54 +20,39 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//====================
+//==================== 
 // Sparky includes
-//====================
-#include <sparky/utilities/iasset_factory.hpp> // class declaration.
+//==================== 
+#include <sparky/utilities/reader.hpp> // Class declaration.
+#include <sparky/utilities/exceptions/not_implemented_exception.hpp> // Throwing exception is open is used.
 
 namespace sparky
 {
-	//====================
+	//==================== 
 	// Ctors and dtor
-	//====================
+	//====================  
 	/**********************************************************/
-	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_type(type), m_threshold(threshold)
+	Reader::Reader()
+		: m_failed(true)
 	{
-		// Empty.
 	}
-	
-	//====================
-	// Getters and setters
-	//====================
-	/**********************************************************/
-    ISerializableService* IAssetFactory::getService() const
-    {
-        return m_service.get();
-    }
 
+	//==================== 
+	// Getters and setters
+	//====================  
 	/**********************************************************/
-    void IAssetFactory::setService(ISerializableService* pService)
-    {
-        m_service.reset(pService);
-    }
-	
-	/**********************************************************/
-	const std::type_index& IAssetFactory::getType() const
+	bool Reader::failed() const
 	{
-		return m_type;
+		return m_failed;
 	}
-	
+
+	//==================== 
+	// Methods
+	//====================  
 	/**********************************************************/
-	std::size_t IAssetFactory::getThreshold() const
+	void Reader::open(const std::string& filename)
 	{
-		return m_threshold;
+		throw NotImplementedException("Reader::open is not implemented in the parent class.");
 	}
-	
-	/**********************************************************/
-	void IAssetFactory::setThreshold(std::size_t threshold)
-	{
-		m_threshold = threshold;
-	}
-	
+
 } // namespace sparky

@@ -21,33 +21,67 @@
 */
 
 //==================== 
+// C++ includes
+//==================== 
+#include <fstream> // Loading and populating a stream with a file from disk.
+
+//==================== 
 // Sparky includes
-//====================  
-#include <sparky/utilities/no_resource_exception.hpp> // Class declaration.
+//==================== 
+#include <sparky/utilities/file_reader.hpp> // Class declaration.
 
 namespace sparky
 {
 	//==================== 
 	// Ctors and dtor
-	//====================  
+	//==================== 
 	/**********************************************************/
-	NoResourceException::NoResourceException(const char* msg)
-		: std::exception(msg)
+	FileReader::FileReader()
+		: Reader(), m_source()
 	{
+		// Empty.
 	}
-
+	
 	/**********************************************************/
-	NoResourceException::NoResourceException(const std::string& msg)
-		: std::exception(msg.c_str())
+	FileReader::FileReader(const std::string& filename)
+		: Reader(), m_source()
 	{
+		this->open(filename);
+	}
+	
+	//==================== 
+	// Getters and setters
+	//==================== 
+	const std::string& FileReader::getSource() const
+	{
+		return m_source;
 	}
 
 	//==================== 
 	// Methods
-	//====================  
+	//==================== 
 	/**********************************************************/
-	const char* NoResourceException::what() const
+	void FileReader::open(const std::string& filename) // override.
 	{
-		return std::exception::what();
+		// Open the file.
+		std::ifstream file;
+		file.open(filename, std::ios::in | std::ios::binary);
+		
+		// The file failed to open, set the failed state and close the stream.
+		if (file.fail())
+		{
+			m_failed = true;
+			file.close();
+			
+			return;
+		}
+		
+		// The file succeeded, set the entire contents into the source string. 
+		m_source.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+		// The file did not fail to load.
+		m_failed = false;
+		// Ensure the stream has been closed.
+		file.close();
 	}
-}
+	
+} // namespace sparky

@@ -25,11 +25,30 @@ set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/utilities")
 
 ################################################################################
 # Header and source files
-set(HEADER_FILES "${INCLUDE_DIR}/iasset_factory.hpp"
-                 "${INCLUDE_DIR}/no_resource_exception.hpp")
+set(HEADER_FILES "${INCLUDE_DIR}/exceptions/no_factory_found_exception.hpp"
+                 "${INCLUDE_DIR}/exceptions/no_resource_exception.hpp"
+                 "${INCLUDE_DIR}/exceptions/not_implemented_exception.hpp"
+                 "${INCLUDE_DIR}/file_reader.hpp"
+                 "${INCLUDE_DIR}/iasset_factory.hpp"
+                 "${INCLUDE_DIR}/iserializable_service.hpp"
+                 "${INCLUDE_DIR}/lua_serializable_service.hpp"
+                 "${INCLUDE_DIR}/non_copyable.hpp"
+                 "${INCLUDE_DIR}/reader.hpp"
+                 "${INCLUDE_DIR}/singleton.hpp"
+                 "${INCLUDE_DIR}/stream_reader.hpp"
+                 "${INCLUDE_DIR}/string_utils.hpp"
+                 "${INCLUDE_DIR}/xml_serializable_service.hpp")
 
-set(SOURCE_FILES "${SOURCE_DIR}/iasset_factory.cpp"
-                 "${SOURCE_DIR}/no_resource_exception.cpp")
+set(SOURCE_FILES "${SOURCE_DIR}/exceptions/no_factory_found_exception.cpp"
+                 "${SOURCE_DIR}/exceptions/no_resource_exception.cpp"
+                 "${SOURCE_DIR}/exceptions/not_implemented_exception.cpp"
+                 "${SOURCE_DIR}/file_reader.cpp"
+                 "${SOURCE_DIR}/iasset_factory.cpp"
+                 "${SOURCE_DIR}/lua_serializable_service.cpp"
+                 "${SOURCE_DIR}/reader.cpp"
+                 "${SOURCE_DIR}/stream_reader.cpp"
+                 "${SOURCE_DIR}/string_utils.cpp"
+                 "${SOURCE_DIR}/xml_serializable_service.cpp")
 
 ################################################################################
 # Library creation
