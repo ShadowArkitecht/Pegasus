@@ -32,6 +32,8 @@ resource_file : string = "Resources.lua"
 [Logging]
 # Specifies whether info level logging will be logged to the specified log policy.
 info_enabled : boolean = true
+# Specifies whether debug level logging will be logged to the specified log policy.
+debug_enabled : boolean = true
 # Specifies whether warning level logging will be logged to the specified log policy.
 warn_enabled : boolean = true
 # Specifies whether error level logging will be logged to the specified log policy.

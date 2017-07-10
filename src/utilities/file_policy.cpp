@@ -20,30 +20,36 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//====================
+//==================== 
 // Sparky includes
-//====================
-#include <sparky/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+//====================  
+#include <sparky/utilities/file_policy.hpp> // Class declaration.
 
 namespace sparky
 {
-	//====================
-	// Private ctor
-	//====================
+	//==================== 
+	// Ctors and dtor
+	//====================  
 	/**********************************************************/
-	ScriptingManager::ScriptingManager()
-		: Singleton<ScriptingManager>(), m_state()
+	FilePolicy::FilePolicy(const std::string& filename)
+		: IPolicy()
 	{
-		m_state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::table, sol::lib::debug);
+		m_file.open(filename.c_str(), std::ios::out | std::ios_base::app);
 	}
 
-	//====================
-	// Getters and setters
-	//====================
 	/**********************************************************/
-	sol::state& ScriptingManager::getState()
+	FilePolicy::~FilePolicy()
 	{
-		return m_state;
+		m_file.close();
+	}
+
+	//==================== 
+	// Methods
+	//====================  
+	/**********************************************************/
+	void FilePolicy::commit(const std::string& msg)
+	{
+		m_file << msg << std::endl;
 	}
 
 } // namespace sparky

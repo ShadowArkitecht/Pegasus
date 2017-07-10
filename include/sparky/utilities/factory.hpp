@@ -33,6 +33,7 @@
 //====================  
 #include <unordered_map> // Storing a list key value creator methods.
 #include <functional>    // The creator is functional type.
+#include <memory>
 #include <stdexcept>     // Throwing runtime errors if duplicate keys detected.
 
 namespace sparky
@@ -45,7 +46,7 @@ namespace sparky
 		// Member variables
 		//====================  
 		/** Stores a map of all the different creator functions for all the different keys. */
-		std::unordered_map<Key, std::function<Type()>> m_creators;
+		std::unordered_map<Key, std::unique_ptr<Type>> m_objects;
 
 	public:
 		//==================== 
@@ -80,23 +81,7 @@ namespace sparky
 		*
 		* @throws std::out_of_range If the key cannot be found within the factory.
 		*/
-		Type get(const Key& key) const;
-
-		/**
-		* @brief Retrieves a resource from the factory, or the default value.
-		*
-		* When the get method is invoked, it will find the element with the matching key and return
-		* the value that is returned with the creator function is invoked. If the key cannot be found, The
-		* default value passed in will be returned.
-		*
-		* @param key     The key of the creator to invoke.
-		* @param default The default value if the key cannot be found.
-		*
-		* @returns The result of the creator method.
-		*
-		* @throws std::out_of_range If the key cannot be found within the factory.
-		*/
-		Type getOrDefault(const Key& key, Type default) const;
+		Type& get(const Key& key);
 
 		//==================== 
 		// Methods
@@ -104,17 +89,16 @@ namespace sparky
 		/**
 		* @brief Registers a creator with the factory.
 		*
-		* When a resource is requested from the factory, if the specified key is found it will invoke
-		* the creator method that is passed in this method. The creator object can either be a function
-		* or method, but must return a unique_ptr of the templated Base type. If a duplicate key is detected
-		* when registering the creator, a runtime error exception will be thrown.
+		* When a resource is requested from the factory, if the specified key is found it will return the resource
+		* associated with that key, which is a reference to a unique pointer. If a duplicate key is detected
+		* when registering the object, a runtime error exception will be thrown.
 		*
 		* @param key     The key to register the creator with.
-		* @param creator The function that will be invoked when an object is requested from the factory.
+		* @param object  The object to register with this key.
 		*
 		* @throws std::runtime_error If a duplicate key is registered with the factory.
 		*/
-		void registerType(const Key& key, const std::function<Type()>& creator);
+		void registerType(const Key& key, std::unique_ptr<Type> object);
 	};
 
 	//==================== 
@@ -133,26 +117,10 @@ namespace sparky
 	//====================  
 	/**********************************************************/
 	template <typename Type, typename Key>
-	Type Factory<Type, Key>::get(const Key& key) const
+	Type& Factory<Type, Key>::get(const Key& key)
 	{
 		// This will throw a out_of_range exception if not found. 
-		return m_creators.at(key)();
-	}
-
-	/**********************************************************/
-	template <typename Type, typename Key>
-	Type Factory<Type, Key>::getOrDefault(const Key& key, Type type) const
-	{
-		// Search for the key.
-		auto itr = m_creators.find(key);
-		// Found it, return the result of the creator.
-		if (itr != m_creators.end())
-		{
-			return itr->second();
-		}
-
-		// Return the default value as the key wasn't found.
-		return type;
+		return *m_objects.at(key);
 	}
 
 	//==================== 
@@ -160,9 +128,9 @@ namespace sparky
 	//====================  
 	/**********************************************************/
 	template <typename Type, typename Key>
-	void Factory<Type, Key>::registerType(const Key& key, const std::function<Type()>& creator)
+	void Factory<Type, Key>::registerType(const Key& key, std::unique_ptr<Type> object)
 	{
-		auto result = m_creators.insert({ key, creator });
+		auto result = m_objects.insert({ key, std::move(object) });
 		if (!result.second)
 		{
 			// Failed insertion (duplicate key). Throw exception.

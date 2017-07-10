@@ -89,6 +89,13 @@ namespace sparky
 		return m_variables.at(variable);
 	}
 
+	/**********************************************************/
+	template <>
+	bool ConfigFile::get<bool>(const std::string& variable) const
+	{
+		return m_variables.at(variable) == "true";
+	}
+
 	//====================
 	// Private methods
 	//====================
@@ -119,7 +126,7 @@ namespace sparky
 		}
 		else if (datatype == "boolean")
 		{
-			if (value != "true" || value != "false")
+			if (value != "true" && value != "false")
 			{
 				throw std::runtime_error(variable + " is not a correctly formatted boolean value.");
 			}

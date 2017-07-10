@@ -20,30 +20,25 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//====================
+//==================== 
+// C++ includes
+//====================  
+#include <iostream> // Printing contents to the console/terminal.
+
+//==================== 
 // Sparky includes
-//====================
-#include <sparky/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+//====================  
+#include <sparky/utilities/console_policy.hpp> // Class declaration.
 
 namespace sparky
 {
-	//====================
-	// Private ctor
-	//====================
+	//==================== 
+	// Methods
+	//====================  
 	/**********************************************************/
-	ScriptingManager::ScriptingManager()
-		: Singleton<ScriptingManager>(), m_state()
+	void ConsolePolicy::commit(const std::string& msg)
 	{
-		m_state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::table, sol::lib::debug);
-	}
-
-	//====================
-	// Getters and setters
-	//====================
-	/**********************************************************/
-	sol::state& ScriptingManager::getState()
-	{
-		return m_state;
+		std::cout << msg << std::endl;
 	}
 
 } // namespace sparky

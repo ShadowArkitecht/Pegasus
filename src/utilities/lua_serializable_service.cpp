@@ -23,9 +23,9 @@
 //====================
 // Sparky includes
 //====================
-#include <sparky/utilities/lua_serializable_service.hpp> // Class declaration.
-#include <sparky/scripting/scripting_manager.hpp>        // Retrieving the lua state.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp>    // Throwing an exception if there were any issues with the resource handling.
+#include <sparky/utilities/lua_serializable_service.hpp>         // Class declaration.
+#include <sparky/scripting/scripting_manager.hpp>                // Retrieving the lua state.
+#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Throwing an exception if there were any issues with the resource handling.
 
 namespace sparky
 {

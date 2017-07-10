@@ -23,51 +23,66 @@
 //====================
 // Sparky includes
 //====================
-#include <sparky/core/resources.hpp>                             // Class declaration.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Throwing exceptions if resource not found.
-#include <sparky/utilities/iserializable_service.hpp>            // De-serialize the resources object.
-
-//====================
-// Library includes
-//====================
-#include <pugixml.hpp> // De-serializing the Resources.xml file.
+#include <sparky/utilities/logger.hpp> // Class declaration.
 
 namespace sparky
 {
 	//====================
-	// Static declaration.
+	// Static variables
 	//====================
-	std::unordered_map<std::string, std::string> Resources::m_resources;
-	ISerializableService* Resources::m_pService;
+	/**********************************************************/
+	bool Logger::m_infoEnabled = false;
+	bool Logger::m_debugEnabled = false;
+	bool Logger::m_warnEnabled = true;
+	bool Logger::m_errorEnabled = true;
+
+	//====================
+	// Ctors and dtor
+	//====================
+	/**********************************************************/
+	Logger::Logger(std::unique_ptr<IPolicy> policy)
+		: m_policy(std::move(policy)), m_stream(), m_mutex()
+	{
+		// Empty.
+	}
+
+	//====================
+	// Private methods
+	//====================
+	/**********************************************************/
+	void Logger::write()
+	{
+		m_policy->commit(m_stream.str());
+
+		m_stream.str("");
+		m_stream.clear();
+	}
 
 	//====================
 	// Getters and setters
 	//====================
 	/**********************************************************/
-	void Resources::setService(ISerializableService& service)
+	void Logger::setInfoEnabled(bool infoEnabled)
 	{
-		m_pService = &service;
+		m_infoEnabled = infoEnabled;
 	}
 
 	/**********************************************************/
-	std::string Resources::get(const std::string& name) const
+	void Logger::setDebugEnabled(bool debugEnabled)
 	{
-		auto itr = m_resources.find(name);
-		if (itr == m_resources.end())
-		{
-			throw NoResourceException("Unable to load file location for resource: " + name);
-		}
-
-		return itr->second;
+		m_debugEnabled = debugEnabled;
 	}
 
-	//====================
-	// Methods
-	//====================
 	/**********************************************************/
-	void Resources::load(const std::string& filename)
+	void Logger::setWarningEnabled(bool warnEnabled)
 	{
-		m_resources = m_pService->deserializeResources(filename);
+		m_warnEnabled = warnEnabled;
+	}
+
+	/**********************************************************/
+	void Logger::setErrorEnabled(bool errorEnabled)
+	{
+		m_errorEnabled = errorEnabled;
 	}
 
 } // namespace sparky

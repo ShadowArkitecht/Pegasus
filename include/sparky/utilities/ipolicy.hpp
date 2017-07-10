@@ -20,32 +20,48 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#ifndef _SPARKY_IPOLICY_HPP_
+#define _SPARKY_IPOLICY_HPP_
+
 //==================== 
 // C++ includes
-//==================== 
-#include <stdexcept> // Inherits from std::exception.
-#include <string>   // Setting the message of the exception.
+//====================  
+#include <string> // Committing a log line to the policy.
 
 namespace sparky
 {
-	class NotImplementedException final : public std::exception
+	class IPolicy
 	{
 	public:
+		//==================== 
+		// Ctors and dtor
+		//====================  
 		/**
-         * @brief Creates a NotImplementedException with a C++ style message.
-         */
-		explicit NotImplementedException(const std::string& msg);
-		
+		 * @brief Default constructor.
+		 */
+		explicit IPolicy() = default;
+
 		/**
-         * @brief Retrieves the message associated with the exception.
-         *
-         * If a message needs to be logged when an exception has been thrown
-         * and caught, this message can be used to display additional
-         * information to the user and any relevant log files.
-         *
-         * @returns The message associated with the exception.
-         */
-		const char* what() const throw();
+		 * @brief Default destructor.
+		 */
+		virtual ~IPolicy() = default;
+
+		//==================== 
+		// Methods
+		//====================  
+		/**
+		 * @brief Commits the changes to the log to the chosen format.
+		 * 
+		 * This method is overriden by any class that inherits from it.
+		 * The commit method is called after any additional information is pushed
+		 * to the log, the commit will when process the message and push it to the
+		 * chosen policy format (the terminal, files etc).
+		 * 
+		 * @param msg The message to commit to the policy.
+		 */
+		virtual void commit(const std::string& msg) = 0;
 	};
-	
+
 } // namespace sparky
+
+#endif//_SPARKY_IPOLICY_HPP_

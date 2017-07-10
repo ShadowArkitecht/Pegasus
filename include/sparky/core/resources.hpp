@@ -64,7 +64,7 @@ namespace sparky
         /** Stores all of the file locations of the defined resources.*/
         static std::unordered_map<std::string, std::string> m_resources;
 		/** The unique serializable service type assigned to de-serialize the Resources file. */
-		static std::unique_ptr<ISerializableService>        m_service;
+		static ISerializableService* m_pService;
 
     public:
         //==================== 
@@ -93,7 +93,7 @@ namespace sparky
 		 *
 		 * @param service The object that the service should be set to.
 		 */
-		 void setService(std::unique_ptr<ISerializableService> service);
+		 void setService(ISerializableService& service);
 
         /**
          * @brief Retrieves a resources file location.

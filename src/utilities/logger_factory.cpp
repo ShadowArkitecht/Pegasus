@@ -20,30 +20,34 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//====================
+//==================== 
 // Sparky includes
-//====================
-#include <sparky/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+//====================  
+#include <sparky/utilities/logger_factory.hpp> // Class declaration.
 
 namespace sparky
 {
-	//====================
-	// Private ctor
-	//====================
-	/**********************************************************/
-	ScriptingManager::ScriptingManager()
-		: Singleton<ScriptingManager>(), m_state()
-	{
-		m_state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::table, sol::lib::debug);
-	}
+	//==================== 
+	// Static variables
+	//====================  
+	Factory<Logger, std::string> LoggerFactory::m_factory;
 
-	//====================
+	//==================== 
 	// Getters and setters
-	//====================
+	//====================  
 	/**********************************************************/
-	sol::state& ScriptingManager::getState()
+	Logger& LoggerFactory::getLogger(const std::string& name)
 	{
-		return m_state;
+		return m_factory.get(name);
+	}
+	
+	//==================== 
+	// Methods
+	//====================  
+	/**********************************************************/
+	void LoggerFactory::registerLogger(const std::string& name, std::unique_ptr<Logger> logger)
+	{
+		m_factory.registerType(name, std::move(logger));
 	}
 
 } // namespace sparky

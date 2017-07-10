@@ -20,32 +20,46 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#ifndef _SPARKY_CONSOLE_POLICY_HPP_
+#define _SPARKY_CONSOLE_POLICY_HPP_
+
 //==================== 
-// C++ includes
-//==================== 
-#include <stdexcept> // Inherits from std::exception.
-#include <string>   // Setting the message of the exception.
+// Sparky includes
+//====================  
+#include <sparky/utilities/ipolicy.hpp> // Inherits from the IPolicy interface.
 
 namespace sparky
 {
-	class NotImplementedException final : public std::exception
+	class ConsolePolicy final : public IPolicy
 	{
 	public:
+		//==================== 
+		// Ctors and dtor
+		//====================  
 		/**
-         * @brief Creates a NotImplementedException with a C++ style message.
-         */
-		explicit NotImplementedException(const std::string& msg);
-		
+		 * @brief Default constructor for the console policy.
+		 */
+		explicit ConsolePolicy() = default;
+
 		/**
-         * @brief Retrieves the message associated with the exception.
-         *
-         * If a message needs to be logged when an exception has been thrown
-         * and caught, this message can be used to display additional
-         * information to the user and any relevant log files.
-         *
-         * @returns The message associated with the exception.
-         */
-		const char* what() const throw();
+		 * @brief Default destructor.
+		 */
+		~ConsolePolicy() = default;
+
+		//==================== 
+		// Methods
+		//====================  
+		/**
+		 * @brief Commits the current line from the log to the console.
+		 * 	 
+		 * The overriden commit method for the ConsolePolicy object pushes
+		 * the current contents of the log to the terminal/console. 
+		 * 
+		 * @param msg The message to push to the console/terminal.
+		 */
+		void commit(const std::string& msg) override;
 	};
-	
+
 } // namespace sparky
+
+#endif//_SPARKY_CONSOLE_POLICY_HPP_

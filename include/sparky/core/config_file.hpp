@@ -135,6 +135,10 @@ namespace sparky
 	template <>
 	std::string ConfigFile::get<std::string>(const std::string& variable) const;
 
+	/**********************************************************/
+	template <>
+	bool ConfigFile::get<bool>(const std::string& variable) const;
+
 } // namespace sparky
 
 #endif//_SPARKY_CONFIGE_FILE_HPP_
