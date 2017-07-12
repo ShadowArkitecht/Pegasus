@@ -27,13 +27,16 @@ set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/core")
 # Header and source files
 set(HEADER_FILES "${INCLUDE_DIR}/asset.hpp" 
                  "${INCLUDE_DIR}/config_file.hpp"
+                 "${INCLUDE_DIR}/context.hpp"
                  "${INCLUDE_DIR}/resource_manager.hpp"
-                 "${INCLUDE_DIR}/resources.hpp")
+                 "${INCLUDE_DIR}/resources.hpp"
+                 "${INCLUDE_DIR}/window.hpp")
              
 set(SOURCE_FILES "${SOURCE_DIR}/asset.cpp"
                  "${SOURCE_DIR}/config_file.cpp"
                  "${SOURCE_DIR}/resource_manager.cpp"
-                 "${SOURCE_DIR}/resources.cpp")
+                 "${SOURCE_DIR}/resources.cpp"
+                 "${SOURCE_DIR}/window.cpp")
 
 ################################################################################
 # Library creation

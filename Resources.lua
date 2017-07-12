@@ -18,7 +18,7 @@
 --
 -- 3. This notice may not be removed or altered from any source distribution.
 
-resources = {
+Resources = {
     -- TODO(Ben): Bind the asset types.
     -- Test asset.
     {

@@ -25,6 +25,7 @@
 //====================
 #include <algorithm> // Removing characters from string with a lambda.
 #include <stdexcept> // Throwing runtime_errors.
+#include <sstream>   // Streaming the vector values.
 
 //====================
 // Sparky includes
@@ -96,7 +97,24 @@ namespace sparky
 		return m_variables.at(variable) == "true";
 	}
 
-	//====================
+	/**********************************************************/
+	template <> 
+	glm::ivec2 ConfigFile::get<glm::ivec2>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::ivec2(std::stoi(elements.at(0)), std::stoi(elements.at(1)));
+	}
+
+	//==================== 
 	// Private methods
 	//====================
 	/**********************************************************/
@@ -133,6 +151,15 @@ namespace sparky
 
 			m_variables.insert({ variable, value });
 		}
+		else if (datatype.substr(0, 4) == "vec2")
+		{
+			if (value.at(0) != '(' && value.at(value.length() - 1) != ')')
+			{
+				throw std::runtime_error(variable + "is not a correctly formatted vec2 value.");
+			}
+
+			m_variables.insert({ variable, value.substr(1, value.length() - 2 )});
+		}
 		else
 		{
 			throw std::runtime_error(variable + " does not conform to a defined datatype.");
@@ -150,6 +177,7 @@ namespace sparky
 		if (reader.failed())
 		{
 			// TODO: Throw an exception.
+			throw std::runtime_error("Failed to open StreamReader for configuration file: " + filename);
 		}
 
 		// Sections are used to divide the config file up into different chunks.
@@ -177,9 +205,10 @@ namespace sparky
 				continue;
 			}
 
+			// Find the indices of the type declaration and assignment.
 			std::size_t typeIndex = line.find(':');
 			std::size_t assignIndex = line.find('=');
-
+			// The line was not in the expected format, throw an exception.
 			if (typeIndex == std::string::npos || assignIndex == std::string::npos)
 			{
 				throw std::runtime_error("Incorrectly formatted line.");
@@ -189,7 +218,6 @@ namespace sparky
 			std::string variable = line.substr(0, typeIndex);
 			// trim the whitespace off the end of the variable.
 			variable = StringUtils::rightTrim(variable);
-
 			// If the section isn't empty, concat the section and variable together.
 			if (!section.empty())
 			{
@@ -203,6 +231,13 @@ namespace sparky
 			// Parse the variable.
 			this->parse(variable, datatype, value);
 		}
+	}
+
+	/**********************************************************/
+	void ConfigFile::close()
+	{
+		// Clear all of the retained variables.
+		m_variables.clear();
 	}
 
 } // namespace sparky

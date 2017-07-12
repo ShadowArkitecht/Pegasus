@@ -61,7 +61,7 @@ namespace sparky
 			throw NoResourceException("Cannot open resource file: " + filename);
 		}
 		// Grab the root table.
-		sol::table root = lua["resources"];
+		sol::table root = lua["Resources"];
 		// Populate the resources being stored in the table.
 		std::unordered_map<std::string, std::string> resources;
 		for (std::size_t i = 0; i < root.size(); i++)

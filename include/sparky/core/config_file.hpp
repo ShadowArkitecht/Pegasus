@@ -29,6 +29,11 @@
 #include <unordered_map> // Stores variables and their subsequent values.
 #include <string>        // Storing the variable and value.
 
+//====================
+// Library includes
+//====================
+#include <glm/glm.hpp>  // Converting config values to vectors.
+
 namespace sparky
 {
 	class ConfigFile final
@@ -110,6 +115,16 @@ namespace sparky
 		 * @returns            True if the file parsed successfully.
 		 */
 		void open(const std::string& filename);
+
+		/**
+		 * @brief Closes the configuration file.
+		 * 
+		 * In order to save on potential memory, the configuration file can be 
+		 * explicitly closed. When the file is closed, it will clear all of the retained
+		 * variables loaded from the file. If the variables are needed again, an additional
+		 * call to ConfigFile::open should be made.
+		 */
+		void close();
 	};
 
 	//====================
@@ -139,6 +154,10 @@ namespace sparky
 	template <>
 	bool ConfigFile::get<bool>(const std::string& variable) const;
 
+	/**********************************************************/
+	template <>
+	glm::ivec2 ConfigFile::get<glm::ivec2>(const std::string& variable) const;
+	
 } // namespace sparky
 
 #endif//_SPARKY_CONFIGE_FILE_HPP_

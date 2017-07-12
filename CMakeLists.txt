@@ -38,21 +38,57 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 ################################################################################
 # Include directories
-include_directories("${CMAKE_SOURCE_DIR}/include") # Sparky engine includes
+include_directories("${CMAKE_SOURCE_DIR}/include")         # Sparky engine includes
 include_directories("${CMAKE_SOURCE_DIR}/lib/pugixml/src") # Pugixml includes
-include_directories("${CMAKE_SOURCE_DIR}/lib/sol2/single")
+include_directories("${CMAKE_SOURCE_DIR}/lib/sol2/single") # sol2 includes
+include_directories("${CMAKE_SOURCE_DIR}/lib/glm")         # OpenGL mathematics includes
 
 ################################################################################
 # Libraries
 
 ########################################
+# SDL2 (window and input) library.
+find_package(SDL2 REQUIRED)
+if (SDL2_FOUND)
+	# The library has been found, include the files and link the libraries.
+	message(STATUS "SDL2 found. Linking to Sparky.")
+	include_directories(${SDL2_INCLUDE_DIR})
+	link_libraries(${SDL2_LIBRARY})
+else()
+	message(FATAL_ERROR "CMake build failed. SDL2 could not be found.")
+endif()
+
+########################################
 # SDL2 image (Image-processing) library.
 # SDL2 image has been found, include the library.
-if (NOT SDL2_IMAGE_FOUND)
-    find_package(SDL2_IMAGE REQUIRED)
+find_package(SDL2_IMAGE REQUIRED)
+if (SDL2_IMAGE_FOUND)
     message(STATUS "SDL2 image found. Linking to Sparky.")
     # Link the library.
     link_libraries(${SDL2_IMAGE_LIBRARY})
+else()
+	message(FATAL_ERROR "CMake build failed. SDL2_image could not be found.")
+endif()
+
+########################################
+# OpenGL (graphics) library.
+find_package(OpenGL REQUIRED)
+if (OPENGL_FOUND)
+	message(STATUS "OpenGL found. Linking to Sparky.")
+	link_libraries(${OPENGL_gl_LIBRARY})
+else()
+	message(FATAL_ERROR "CMake build failed. OpenGL could not be found.")
+endif()
+
+########################################
+# Glew (OpenGL extensions) library.
+find_package(JGLEW REQUIRED)
+if (JGLEW_FOUND)
+	message(STATUS "GLEW found. Linking to Jackal Engine.")
+	include_directories(${JGLEW_INCLUDE_DIR})
+	link_libraries(${JGLEW_LIBRARY})
+else()
+	message(FATAL_ERROR "CMake build failed. GLEW count not be found.")
 endif()
 
 ########################################

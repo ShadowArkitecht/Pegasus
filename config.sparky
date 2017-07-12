@@ -40,6 +40,33 @@ warn_enabled : boolean = true
 error_enabled : boolean = true
 
 
+# The Window section controls the appearance of the window when it is first instantiated. It is responsible for the title
+# and dimensions of the window, aswell as more specific options such as enabling/disabling vsync and the full-screen state.
+[Window]
+# Specifies what the title of the window will be when not in full-screen mode.
+title : string = "Sparky Engine!"
+# Specifies the width and height of the window when it is not in full-screen mode.
+# The x value represemts the width.
+# The y value represents the height.
+size : vec2i = (640, 480)
+# Controls whether the window will begin in a full-screen format. When the window is in fullscreen it ignores the defined
+# width and height of the window, until the window is minimized.
+is_fullscreen : boolean	= false
+
+
+# The graphics section controls the specific graphical sections in regards to the OpenGL versions and bits for the depth
+# buffer and the stencil buffer.
+[Graphics]
+# The amount of bits the depth buffer will be made from.
+depth_bits : uint = 24
+# The amount of bits the stencil buffer will be made from.
+stencil_bits : uint  = 8
+# Which major version of OpenGL the application will utilise.
+major_version : uint = 4
+# Which minor version of OpenGL the application will utilise.
+minor_version : uint = 0
+
+
 # The serialization header controls how specific data and objects are de-serialized into a format that the Sparky Engine can utilise.
 # There are three different serialization formats provided:
 #
