@@ -1,4 +1,4 @@
-# Sparky Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -25,20 +25,24 @@
 cmake_minimum_required(VERSION 3.1.0) 
 
 # Sets the project name.
-project(Sparky)
+project(Pegasus)
 
 # Set the project versions.
-set(SPARKY_MAJOR_VERSION 0)
-set(SPARKY_MINOR_VERSION 1)
-set(SPARKY_PATCH_VERSION 0)
-set(SPARKY_VERSION ${SPARKY_MAJOR_VERSION}.${SPARKY_MINOR_VERSION}.${SPARKY_PATCH_VERSION})
+set(PEGASUS_MAJOR_VERSION 0)
+set(PEGASUS_MINOR_VERSION 1)
+set(PEGASUS_PATCH_VERSION 0)
+set(PEGASUS_VERSION ${PEGASUS_MAJOR_VERSION}.${PEGASUS_MINOR_VERSION}.${PEGASUS_PATCH_VERSION})
 
 # Include any additional cmake files.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+# Set some compile/macro flags.
+# Disable the irritating msvc flag for "unsafe" c functions.
+add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
 ################################################################################
 # Include directories
-include_directories("${CMAKE_SOURCE_DIR}/include")         # Sparky engine includes
+include_directories("${CMAKE_SOURCE_DIR}/include")         # Pegasus engine includes
 include_directories("${CMAKE_SOURCE_DIR}/lib/pugixml/src") # Pugixml includes
 include_directories("${CMAKE_SOURCE_DIR}/lib/sol2/single") # sol2 includes
 include_directories("${CMAKE_SOURCE_DIR}/lib/glm")         # OpenGL mathematics includes
@@ -51,7 +55,7 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/glm")         # OpenGL mathematics 
 find_package(SDL2 REQUIRED)
 if (SDL2_FOUND)
 	# The library has been found, include the files and link the libraries.
-	message(STATUS "SDL2 found. Linking to Sparky.")
+	message(STATUS "SDL2 found. Linking to Pegasus Engine.")
 	include_directories(${SDL2_INCLUDE_DIR})
 	link_libraries(${SDL2_LIBRARY})
 else()
@@ -63,7 +67,7 @@ endif()
 # SDL2 image has been found, include the library.
 find_package(SDL2_IMAGE REQUIRED)
 if (SDL2_IMAGE_FOUND)
-    message(STATUS "SDL2 image found. Linking to Sparky.")
+    message(STATUS "SDL2 image found. Linking to Pegasus Engine.")
     # Link the library.
     link_libraries(${SDL2_IMAGE_LIBRARY})
 else()
@@ -74,7 +78,7 @@ endif()
 # OpenGL (graphics) library.
 find_package(OpenGL REQUIRED)
 if (OPENGL_FOUND)
-	message(STATUS "OpenGL found. Linking to Sparky.")
+	message(STATUS "OpenGL found. Linking to Pegasus Engine.")
 	link_libraries(${OPENGL_gl_LIBRARY})
 else()
 	message(FATAL_ERROR "CMake build failed. OpenGL could not be found.")
@@ -84,7 +88,7 @@ endif()
 # Glew (OpenGL extensions) library.
 find_package(JGLEW REQUIRED)
 if (JGLEW_FOUND)
-	message(STATUS "GLEW found. Linking to Jackal Engine.")
+	message(STATUS "GLEW found. Linking to Pegasus Engine.")
 	include_directories(${JGLEW_INCLUDE_DIR})
 	link_libraries(${JGLEW_LIBRARY})
 else()
@@ -97,7 +101,7 @@ if (NOT LUA_FOUND AND NOT LUA51_FOUND)
 	find_package(Lua51 REQUIRED)
 	include_directories("${LUA_INCLUDE_DIR}")
 	link_libraries(${LUA_LIBRARIES})
-	message(STATUS "Lua found. Linking to Sparky.")
+	message(STATUS "Lua found. Linking to Pegasus Engine.")
 else()
 	message(FATAL_ERROR "CMake build failed. Lua could not be found.")
 endif()
@@ -124,23 +128,23 @@ set(TEST_SOURCE_FILES ${CMAKE_SOURCE_DIR}/tests/test_main.cpp
                       ${CMAKE_SOURCE_DIR}/tests/test_lua_serializable_service.cpp)
 
 ################################################################################
-# Sparky executable
+# Pegasus executable
 # This is temporary, until the lib is linked to an .exe/game.
-add_executable(sparky ${TEMP_SOURCE_FILES}) 
+add_executable(pegasus ${TEMP_SOURCE_FILES}) 
 
 # Set linker language to C++
-set_target_properties(sparky PROPERTIES LINKER_LANGUAGE CXX) 
+set_target_properties(pegasus PROPERTIES LINKER_LANGUAGE CXX) 
 # Link libraries to executable.
-target_link_libraries(sparky pugixml sparky_core sparky_utilities sparky_scripting)
+target_link_libraries(pegasus pugixml pegasus_core pegasus_graphics pegasus_scripting pegasus_utilities)
 
 ################################################################################
 # Test executable.
-add_executable(sparky_test ${TEST_SOURCE_FILES})
+add_executable(pegasus_test ${TEST_SOURCE_FILES})
 
 # Set linker language to C++.
-set_target_properties(sparky_test PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(pegasus_test PROPERTIES LINKER_LANGUAGE CXX)
 # Link the libraries to test executable.
-target_link_libraries(sparky_test catch pugixml sparky_core sparky_utilities sparky_scripting)
+target_link_libraries(pegasus_test catch pugixml pegasus_core pegasus_graphics pegasus_scripting pegasus_utilities)
 
 enable_testing(true)
-add_test(NAME sparky_test COMMAND sparky_tests)
+add_test(NAME pegasus_test COMMAND pegasus_tests)

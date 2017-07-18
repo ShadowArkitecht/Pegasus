@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,13 +21,13 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/lua_serializable_service.hpp>         // Class declaration.
-#include <sparky/scripting/scripting_manager.hpp>                // Retrieving the lua state.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Throwing an exception if there were any issues with the resource handling.
+#include <pegasus/utilities/lua_serializable_service.hpp>         // Class declaration.
+#include <pegasus/scripting/scripting_manager.hpp>                // Retrieving the lua state.
+#include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Throwing an exception if there were any issues with the resource handling.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Ctors and dtor
@@ -83,4 +83,4 @@ namespace sparky
 		return resources;
 	}
 
-} // namespace sparky
+} // namespace pegasus

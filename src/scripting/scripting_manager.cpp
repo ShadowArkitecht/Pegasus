@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,11 +21,11 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+#include <pegasus/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Private ctor
@@ -46,4 +46,4 @@ namespace sparky
 		return m_state;
 	}
 
-} // namespace sparky
+} // namespace pegasus

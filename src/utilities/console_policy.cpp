@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -26,11 +26,11 @@
 #include <iostream> // Printing contents to the console/terminal.
 
 //==================== 
-// Sparky includes
+// Pegasus includes
 //====================  
-#include <sparky/utilities/console_policy.hpp> // Class declaration.
+#include <pegasus/utilities/console_policy.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//==================== 
 	// Methods
@@ -41,4 +41,4 @@ namespace sparky
 		std::cout << msg << std::endl;
 	}
 
-} // namespace sparky
+} // namespace pegasus

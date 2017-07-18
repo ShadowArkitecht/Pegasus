@@ -1,4 +1,4 @@
-# Sparky Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -20,7 +20,7 @@
 
 ################################################################################
 # File directories
-set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/sparky/scripting")
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/pegasus/scripting")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/scripting")
 
 ################################################################################
@@ -31,5 +31,5 @@ set(SOURCE_FILES "${SOURCE_DIR}/scripting_manager.cpp")
 
 ################################################################################
 # Library creation
-add_library(sparky_scripting ${HEADER_FILES} ${SOURCE_FILES})
-set_target_properties(sparky_scripting PROPERTIES LINKER_LANGUAGE CXX)
+add_library(pegasus_scripting ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(pegasus_scripting PROPERTIES LINKER_LANGUAGE CXX)

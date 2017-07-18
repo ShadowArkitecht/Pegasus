@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -26,11 +26,11 @@
 #include <stdexcept> // Runtime exception throwing.
 
 //==================== 
-// Sparky includes
+// Pegasus includes
 //====================  
-#include <sparky/core/resource_manager.hpp> // Class declaration.
+#include <pegasus/core/resource_manager.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
     //==================== 
     // Ctors and dtor
@@ -66,4 +66,4 @@ namespace sparky
         m_factories.insert({ pFactory->getType(), std::unique_ptr<IAssetFactory>(pFactory) });
     }
 
-} // namespace sparky
+} // namespace pegasus

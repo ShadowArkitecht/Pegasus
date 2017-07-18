@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -27,11 +27,11 @@
 #include <cctype> // Checking if a character only contains white-space.
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/string_utils.hpp> // Class declaration.
+#include <pegasus/utilities/string_utils.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Methods
@@ -67,4 +67,4 @@ namespace sparky
 		return s;
 	}
 
-} // namespace sparky
+} // namespace pegasus

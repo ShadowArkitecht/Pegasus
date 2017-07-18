@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,12 +21,12 @@
 */
 
 //==================== 
-// Sparky includes
+// Pegasus includes
 //==================== 
-#include <sparky/utilities/reader.hpp> // Class declaration.
-#include <sparky/utilities/exceptions/not_implemented_exception.hpp> // Throwing exception is open is used.
+#include <pegasus/utilities/reader.hpp> // Class declaration.
+#include <pegasus/utilities/exceptions/not_implemented_exception.hpp> // Throwing exception is open is used.
 
-namespace sparky
+namespace pegasus
 {
 	//==================== 
 	// Ctors and dtor
@@ -55,4 +55,4 @@ namespace sparky
 		throw NotImplementedException("Reader::open is not implemented in the parent class.");
 	}
 
-} // namespace sparky
+} // namespace pegasus

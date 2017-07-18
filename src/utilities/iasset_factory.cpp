@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,11 +21,11 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/iasset_factory.hpp> // class declaration.
+#include <pegasus/utilities/iasset_factory.hpp> // class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Ctors and dtor
@@ -70,4 +70,4 @@ namespace sparky
 		m_threshold = threshold;
 	}
 	
-} // namespace sparky
+} // namespace pegasus

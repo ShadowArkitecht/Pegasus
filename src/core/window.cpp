@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -26,18 +26,19 @@
 #include <stdexcept> // Throwing runtime exceptions.
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/core/window.hpp>               // Class declaration.
-#include <sparky/utilities/logger_factory.hpp>  // Getting the relevant logs.
-#include <sparky/core/config_file.hpp>          // Retrieving variables from the configuration file.
+#include <pegasus/core/window.hpp>               // Class declaration.
+#include <pegasus/utilities/logger_factory.hpp>  // Getting the relevant logs.
+#include <pegasus/core/config_file.hpp>          // Retrieving variables from the configuration file.
+#include <pegasus/graphics/gl.hpp>               // Initializing and rendering with OpenGL.
 
 //====================
 // Library includes
 //====================
 #include <GL/glew.h> // Initializing OpenGL.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Ctors and dtor
@@ -150,22 +151,19 @@ namespace sparky
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, m_settings.stencilBits);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_settings.majorVersion);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_settings.minorVersion);
-		// Needed flag to get glew to work on linux/mac.
-		glewExperimental = GL_TRUE;
-		// Checking the glew initialization.
-		GLenum error = glewInit();
+
+		// Initialise Gl.
+		GLenum error = gl::initialize();
 		// Checking it initialized successfully.
 		if (error != GLEW_OK)
 		{
 			throw std::runtime_error("GLEW failed to initialize: ");
 		}
-		// Enable some core opengl settings.
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glEnable(GL_DEPTH_TEST);
 		// The window creation is successful.
 		m_running = true;
+		// Check that no GL errors have occured during initialization.
+		PEGASUS_GL_CHECK_ERRORS();
+		// Log successful creation.
 		m_logger.debug("Window creation successful.");
 	}
 
@@ -178,8 +176,8 @@ namespace sparky
 	/**********************************************************/
 	void Window::clear() const
 	{
-		glClearColor(0.5, 0.5, 0.5, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		gl::clearColor(0.5, 0.5, 0.5, 1.0);
+		gl::clear();
 	}
 
 	/**********************************************************/
@@ -188,4 +186,4 @@ namespace sparky
 		SDL_GL_SwapWindow(m_pHandle);
 	}
 
-} // namespace sparky
+} // namespace pegasus

@@ -1,5 +1,1 @@
-[DEBUG]: 19:24:59 - Window creation successful. 
-[DEBUG]: 19:25:23 - Window creation successful. 
-[ERROR]: 19:54:58 - Incorrectly formatted line. 
-[DEBUG]: 19:55:32 - Window creation successful. 
-[DEBUG]: 20:38:11 - Window creation successful. 
+[DEBUG]: 20:33:13 - Window creation successful. 

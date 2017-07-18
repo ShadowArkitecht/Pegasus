@@ -1,4 +1,4 @@
--- Sparky Engine
+-- Pegasus Engine
 -- 2017 - Benjamin Carter (bencarterdev@outlook.com)
 --
 -- This software is provided 'as-is', without any express or implied warranty.

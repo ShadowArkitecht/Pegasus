@@ -1,4 +1,4 @@
-# Sparky Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -20,7 +20,7 @@
 
 ################################################################################
 # File directories
-set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/sparky/utilities")
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/pegasus/utilities")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/utilities")
 
 ################################################################################
@@ -62,5 +62,5 @@ set(SOURCE_FILES "${SOURCE_DIR}/exceptions/no_factory_found_exception.cpp"
 
 ################################################################################
 # Library creation
-add_library(sparky_utilities ${HEADER_FILES} ${SOURCE_FILES})
-set_target_properties(sparky_utilities PROPERTIES LINKER_LANGUAGE CXX)
+add_library(pegasus_utilities ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(pegasus_utilities PROPERTIES LINKER_LANGUAGE CXX)

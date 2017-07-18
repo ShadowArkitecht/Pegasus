@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -26,11 +26,11 @@
 #include <fstream> // Loading and populating a stream with a file from disk.
 
 //==================== 
-// Sparky includes
+// Pegasus includes
 //==================== 
-#include <sparky/utilities/file_reader.hpp> // Class declaration.
+#include <pegasus/utilities/file_reader.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//==================== 
 	// Ctors and dtor
@@ -84,4 +84,4 @@ namespace sparky
 		file.close();
 	}
 	
-} // namespace sparky
+} // namespace pegasus

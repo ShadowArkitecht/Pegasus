@@ -1,6 +1,6 @@
-#include <sparky/core/asset.hpp>
+#include <pegasus/core/asset.hpp>
 
-namespace sparky
+namespace pegasus
 {
     Asset::Asset()
         : m_id(0), m_name()
@@ -23,4 +23,4 @@ namespace sparky
         m_name = name;
     }
 
-} // namespace sparky
+} // namespace pegasus

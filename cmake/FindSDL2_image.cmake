@@ -1,6 +1,4 @@
-###################################################################################################
-#
-# Jackal Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -19,8 +17,7 @@
 #    and must not be misrepresented as being the original software.
 #
 # 3. This notice may not be removed or altered from any source distribution.
-#
-###################################################################################################
+
 
 ################################################################################
 # Find SD2 image

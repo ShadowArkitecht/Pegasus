@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,17 +21,17 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/lua_serializable_service.hpp> // Testing the LuaSerializableService class.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Testing for correct exceptions being thrown.
+#include <pegasus/utilities/lua_serializable_service.hpp> // Testing the LuaSerializableService class.
+#include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Testing for correct exceptions being thrown.
 
 //====================
 // Library includes
 //====================
 #include <catch.hpp> // Unit test library.
 
-using namespace sparky;
+using namespace pegasus;
 
 //====================
 // Unit tests

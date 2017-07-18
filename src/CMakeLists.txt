@@ -1,4 +1,4 @@
-# Sparky Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -20,6 +20,7 @@
 
 ################################################################################
 # Subdirectories
-add_subdirectory(core)      # The sparky core library.
-add_subdirectory(scripting) # The sparky scripting library.
-add_subdirectory(utilities) # The sparky utilities library.
+add_subdirectory(core)      # The pegasus core library.
+add_subdirectory(graphics)  # The pegasus graphics library.
+add_subdirectory(scripting) # The pegasus scripting library.
+add_subdirectory(utilities) # The pegasus utilities library.

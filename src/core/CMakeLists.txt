@@ -1,4 +1,4 @@
-# Sparky Engine
+# Pegasus Engine
 # 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
 # This software is provided 'as-is', without any express or implied warranty.
@@ -20,7 +20,7 @@
 
 ################################################################################
 # File directories
-set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/sparky/core")
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/pegasus/core")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/core")
 
 ################################################################################
@@ -40,5 +40,5 @@ set(SOURCE_FILES "${SOURCE_DIR}/asset.cpp"
 
 ################################################################################
 # Library creation
-add_library(sparky_core ${HEADER_FILES} ${SOURCE_FILES})
-set_target_properties(sparky_core PROPERTIES LINKER_LANGUAGE CXX)
+add_library(pegasus_core ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(pegasus_core PROPERTIES LINKER_LANGUAGE CXX)

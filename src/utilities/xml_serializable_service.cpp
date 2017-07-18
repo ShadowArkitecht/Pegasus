@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,17 +21,17 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/xml_serializable_service.hpp> // Class declaration.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp>    // Throwing exceptions if resource not found.
+#include <pegasus/utilities/xml_serializable_service.hpp> // Class declaration.
+#include <pegasus/utilities/exceptions/no_resource_exception.hpp>    // Throwing exceptions if resource not found.
 
 //====================
 // Library includes
 //====================
 #include <pugixml.hpp> // De-serializing the Resources.xml file.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Ctors and dtor
@@ -76,4 +76,4 @@ namespace sparky
 		return resources;
 	}
 
-} // namespace sparky
+} // namespace pegasus

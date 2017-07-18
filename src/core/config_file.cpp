@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -28,13 +28,13 @@
 #include <sstream>   // Streaming the vector values.
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/core/config_file.hpp>        // Class declarations.
-#include <sparky/utilities/stream_reader.hpp> // Reading in the configuration file.
-#include <sparky/utilities/string_utils.hpp>  // Trimming strings.
+#include <pegasus/core/config_file.hpp>        // Class declarations.
+#include <pegasus/utilities/stream_reader.hpp> // Reading in the configuration file.
+#include <pegasus/utilities/string_utils.hpp>  // Trimming strings.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Ctors and dtor
@@ -240,4 +240,4 @@ namespace sparky
 		m_variables.clear();
 	}
 
-} // namespace sparky
+} // namespace pegasus

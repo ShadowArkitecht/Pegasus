@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,11 +21,11 @@
 */
 
 //==================== 
-// Sparky includes
+// Pegasus includes
 //====================  
-#include <sparky/utilities/file_policy.hpp> // Class declaration.
+#include <pegasus/utilities/file_policy.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//==================== 
 	// Ctors and dtor
@@ -52,4 +52,4 @@ namespace sparky
 		m_file << msg << std::endl;
 	}
 
-} // namespace sparky
+} // namespace pegasus

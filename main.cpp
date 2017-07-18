@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -25,22 +25,26 @@
 //====================
 #include <cstdlib>   // Macros for exit failure or success.
 #include <stdexcept> // Catching any runtime_error exceptions being thrown.
+#include <array>
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/logger.hpp>          // Creating different logging objects.
-#include <sparky/utilities/console_policy.hpp>  // Registering the console policy with a logger.
-#include <sparky/utilities/file_policy.hpp>     // Registering the file policy with a logger.
-#include <sparky/utilities/logger_factory.hpp>  // Storing and retrieval of different logs.
-#include <sparky/core/config_file.hpp>          // Loading the external configuration file.
-#include <sparky/utilities/xml_serializable_service.hpp> // Registering the xml serializable service with a factory.
-#include <sparky/utilities/lua_serializable_service.hpp> // Registering the lua serializable service with a factory.
-#include <sparky/core/resources.hpp> // Loading and storing the Resources.xxx file.
-#include <sparky/utilities/exceptions/no_resource_exception.hpp> // Caught if the Resources.xxx file fails to load.
-#include <sparky/core/window.hpp>
+#include <pegasus/utilities/logger.hpp>          // Creating different logging objects.
+#include <pegasus/utilities/console_policy.hpp>  // Registering the console policy with a logger.
+#include <pegasus/utilities/file_policy.hpp>     // Registering the file policy with a logger.
+#include <pegasus/utilities/logger_factory.hpp>  // Storing and retrieval of different logs.
+#include <pegasus/core/config_file.hpp>          // Loading the external configuration file.
+#include <pegasus/utilities/xml_serializable_service.hpp> // Registering the xml serializable service with a factory.
+#include <pegasus/utilities/lua_serializable_service.hpp> // Registering the lua serializable service with a factory.
+#include <pegasus/core/resources.hpp> // Loading and storing the Resources.xxx file.
+#include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Caught if the Resources.xxx file fails to load.
+#include <pegasus/core/window.hpp>
+#include <pegasus/graphics/buffer.hpp>
+#include <pegasus/graphics/vertex.hpp>
+#include <pegasus/graphics/gl.hpp>
 
-using namespace sparky;
+using namespace pegasus;
 
 //====================
 // Functions
@@ -60,7 +64,7 @@ int main(int argc, char** argv)
 	try 
 	{
 		// Attempt to open and parse the configuration file.
-		config.open("config.sparky");
+		config.open("config.pegasus");
 	} 
 	catch (std::runtime_error& e) 
 	{
@@ -104,10 +108,38 @@ int main(int argc, char** argv)
 	Window window;
 	window.create(config);
 
+	// Create the temporary vertices.
+	Vertex2D_t v1; v1.position = glm::vec2(-0.5f, -0.5f);
+	Vertex2D_t v2; v2.position = glm::vec2( 0.5f, -0.5f);
+	Vertex2D_t v3; v3.position = glm::vec2( 0.0f,  0.5f);
+	// Populate an array of vertices.
+	std::array<Vertex2D_t, 3> vertices;
+	vertices.at(0) = v1;
+	vertices.at(1) = v2;
+	vertices.at(2) = v3;
+
+	// Create a description for the buffer.
+	BufferDescription desc;
+	// "Zero" out the memory.
+	memset(&desc, 0, sizeof(BufferDescription));
+	// Populate the fields.
+	desc.bufferType = eBufferType::VERTEX;
+	desc.drawType = eDrawType::STATIC;
+	desc.stride = sizeof(Vertex2D_t);
+	desc.size = vertices.size();
+	desc.pData = vertices.data();
+
+	// Create the buffer with the description.
+	Buffer buffer(desc);
+
 	while (window.isRunning())
 	{
 		window.clear();
 
+		Buffer::bind(buffer);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		Buffer::unbind(buffer);
+		
 		window.swap();
 	}
 	

@@ -1,5 +1,5 @@
 /*
-* Sparky Engine
+* Pegasus Engine
 * 2017 - Benjamin Carter (bencarterdev@outlook.com)
 *
 * This software is provided 'as-is', without any express or implied warranty.
@@ -21,11 +21,11 @@
 */
 
 //====================
-// Sparky includes
+// Pegasus includes
 //====================
-#include <sparky/utilities/logger.hpp> // Class declaration.
+#include <pegasus/utilities/logger.hpp> // Class declaration.
 
-namespace sparky
+namespace pegasus
 {
 	//====================
 	// Static variables
@@ -85,4 +85,4 @@ namespace sparky
 		m_errorEnabled = errorEnabled;
 	}
 
-} // namespace sparky
+} // namespace pegasus

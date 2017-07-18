@@ -1,18 +1,22 @@
+# Pegasus Engine
+# 2017 - Benjamin Carter (bencarterdev@outlook.com)
 #
-# Find GLM
+# This software is provided 'as-is', without any express or implied warranty.
+# In no event will the authors be held liable for any damages arising from the use of this software.
 #
-# Try to find GLM : OpenGL Mathematics.
-# This module defines 
-# - GLM_INCLUDE_DIRS
-# - GLM_FOUND
+# Permission is granted to anyone to use this software for any purpose,
+# including commercial applications, and to alter it and redistribute it freely,
+# subject to the following restrictions:
 #
-# The following variables can be set as arguments for the module.
-# - GLM_ROOT_DIR : Root library directory of GLM 
+# 1. The origin of this software must not be misrepresented;
+#    you must not claim that you wrote the original software.
+#    If you use this software in a product, an acknowledgement
+#    in the product documentation would be appreciated but is not required.
 #
-# References:
-# - https://github.com/Groovounet/glm/blob/master/util/FindGLM.cmake
-# - https://bitbucket.org/alfonse/gltut/src/28636298c1c0/glm-0.9.0.7/FindGLM.cmake
+# 2. Altered source versions must be plainly marked as such,
+#    and must not be misrepresented as being the original software.
 #
+# 3. This notice may not be removed or altered from any source distribution.
 
 # Additional modules
 include(FindPackageHandleStandardArgs)
