@@ -76,7 +76,7 @@ namespace pegasus
 	}
 
 	/**********************************************************/
-	eBufferType Buffer::getType() const
+	gl::eBufferType Buffer::getType() const
 	{
 		return m_type;
 	}

@@ -7,14 +7,14 @@ namespace pegasus
 {
     enum class eAssetType
     {
-        TEXTURE
+        SHADER
     };
 
     class Asset
     {
     protected:
         std::string  m_name;
-        unsigned int m_id;
+        unsigned int m_ID;
 
     public:
         explicit Asset();

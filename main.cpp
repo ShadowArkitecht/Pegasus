@@ -25,7 +25,7 @@
 //====================
 #include <cstdlib>   // Macros for exit failure or success.
 #include <stdexcept> // Catching any runtime_error exceptions being thrown.
-#include <array>
+#include <array>     // An array of vertices.
 
 //====================
 // Pegasus includes
@@ -39,10 +39,10 @@
 #include <pegasus/utilities/lua_serializable_service.hpp> // Registering the lua serializable service with a factory.
 #include <pegasus/core/resources.hpp> // Loading and storing the Resources.xxx file.
 #include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Caught if the Resources.xxx file fails to load.
-#include <pegasus/core/window.hpp>
-#include <pegasus/graphics/buffer.hpp>
-#include <pegasus/graphics/vertex.hpp>
-#include <pegasus/graphics/gl.hpp>
+#include <pegasus/core/window.hpp>              // Creating an sdl window.
+#include <pegasus/graphics/buffer.hpp>          // Generating a vertex buffer.
+#include <pegasus/graphics/vertex.hpp>          // Setting the vertices of the mesh.
+#include <pegasus/graphics/shader_program.hpp>  // Creating a shader program and linking glsl files.
 
 using namespace pegasus;
 
@@ -58,15 +58,15 @@ int main(int argc, char** argv)
 	// Register the console logger with the factory.
 	LoggerFactory::registerLogger("console.logger", std::move(cl));
 	LoggerFactory::registerLogger("file.logger", std::move(fl));
-	
+
 	// Create a configuration file object.
 	ConfigFile config;
-	try 
+	try
 	{
 		// Attempt to open and parse the configuration file.
 		config.open("config.pegasus");
-	} 
-	catch (std::runtime_error& e) 
+	}
+	catch (std::runtime_error& e)
 	{
 		// Log that the config file failed to open.
 		Logger& logger = LoggerFactory::getLogger("file.logger");
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 	Logger::setDebugEnabled(config.get<bool>("Logging.debug_enabled"));
 	Logger::setWarningEnabled(config.get<bool>("Logging.warn_enabled"));
 	Logger::setErrorEnabled(config.get<bool>("Logging.error_enabled"));
-	
+
 	// Create the factory that will generate the serializable services.
 	Factory<ISerializableService, std::string> factory;
 	// Register the serialization formats with their specified keys.
@@ -123,29 +123,41 @@ int main(int argc, char** argv)
 	// "Zero" out the memory.
 	memset(&desc, 0, sizeof(BufferDescription));
 	// Populate the fields.
-	desc.bufferType = eBufferType::VERTEX;
-	desc.drawType = eDrawType::STATIC;
+	desc.bufferType = gl::eBufferType::VERTEX;
+	desc.drawType = gl::eDrawType::STATIC;
 	desc.stride = sizeof(Vertex2D_t);
 	desc.size = vertices.size();
 	desc.pData = vertices.data();
 
 	// Create the buffer with the description.
 	Buffer buffer(desc);
+	// Create the shader program.
+	ShaderProgram program;
+	// Attach two shaders.
+	program.attach(gl::eShaderType::VERTEX, "data/shaders/basic_vertex.glsl");
+	program.attach(gl::eShaderType::FRAGMENT, "data/shaders/basic_fragment.glsl");
+	// Compile and link the shaders to the program.
+	program.compile();
 
+	// Continue to draw the window whilst it's running.
 	while (window.isRunning())
 	{
+		// Clear the buffer.
 		window.clear();
-
+		// Bind the shader program.
+		ShaderProgram::bind(program);
+		// Bind and draw the vertex buffer.
 		Buffer::bind(buffer);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		Buffer::unbind(buffer);
-		
+		// Unbind the shader program.
+		ShaderProgram::bind(program);
+		// Swap the buffers.
 		window.swap();
 	}
-	
+
 	// Closing the configuration file.
 	config.close();
     // The application exited successfully.
     return EXIT_SUCCESS;
 }
-

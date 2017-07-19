@@ -24,38 +24,21 @@
 #define _PEGASUS_BUFFER_DESCRIPTION_HPP_
 
 //====================
-// Library includes
+// Pegasus includes
 //====================
-#include <GL/glew.h> // Defining openGL flags.
+#include <pegasus/graphics/gl.hpp> // Include definitions for GL enum types.
 
 namespace pegasus
 {
-	//====================
-	// Enumerations
-	//====================
-	enum class eBufferType
-	{
-		/** A buffer that will be constructed as a vertex buffer. */
-		VERTEX = GL_ARRAY_BUFFER
-	};
-
-	enum class eDrawType
-	{
-		/** The vertices will be drawn as static (the data will not change). */
-		STATIC = GL_STATIC_DRAW,
-		/** The vertices will be drawn as dynamic (data is likely to change i.e. sprite batch. */
-		DYNAMIC = GL_DYNAMIC_DRAW
-	};
-
 	//====================
 	// Structures
 	//====================
 	struct BufferDescription
 	{
 		/** The type of buffer that is to be bound. */
-		eBufferType bufferType;
+		gl::eBufferType bufferType;
 		/** Whether the drawing command will be static or dynamic. */
-		eDrawType drawType;
+		gl::eDrawType drawType;
 		/** The size of the data being described. */
 		GLuint stride;
 		/** The total amount of data to populate the buffer with. */

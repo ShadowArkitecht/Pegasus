@@ -3,14 +3,14 @@
 namespace pegasus
 {
     Asset::Asset()
-        : m_id(0), m_name()
+        : m_ID(0), m_name()
     {
         // Empty.
     }
 
     unsigned int Asset::getID() const
     {
-        return m_id;
+        return m_ID;
     }
 
     const std::string& Asset::getName() const

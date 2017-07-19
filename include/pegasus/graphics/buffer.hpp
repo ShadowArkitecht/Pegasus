@@ -37,9 +37,9 @@ namespace pegasus
 		// Member variables
 		//====================
 		/** The unique ID of the buffer. */
-		GLuint      m_ID;
+		GLuint          m_ID;
 		/** The type of buffer that has been created. */
-		eBufferType m_type;
+		gl::eBufferType m_type;
 
 	public:
 		//====================
@@ -99,7 +99,7 @@ namespace pegasus
 		 * 
 		 * @returns The type of buffer.
 		 */
-		eBufferType getType() const;
+		gl::eBufferType getType() const;
 
 		//====================
 		// Methods

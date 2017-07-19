@@ -46,7 +46,7 @@ namespace pegasus
 			glewExperimental = GL_TRUE;
 			// Return the result of the initialization.
 			return glewInit();
-		}		
+		}
 
 		/**********************************************************/
 		GLuint genBuffer()
@@ -61,13 +61,64 @@ namespace pegasus
 		void bindBuffer(eBufferType type, GLuint ID)
 		{
 			glBindBuffer(static_cast<GLenum>(type), ID);
-		}	
-		
+		}
+
 		/**********************************************************/
 		void bufferData(eBufferType bufferType, std::size_t size, void* pData, eDrawType drawType)
 		{
 			glBufferData(static_cast<GLenum>(bufferType), size, pData, static_cast<GLenum>(drawType));
 		}
+
+        /**********************************************************/
+        GLuint createShader(eShaderType type)
+        {
+            return glCreateShader(static_cast<GLenum>(type));
+        }
+
+		/**********************************************************/
+		void attachShader(GLuint programID, GLuint shaderID)
+		{
+			glAttachShader(programID, shaderID);
+		}        
+
+		/**********************************************************/
+        GLint shaderStatus(GLuint ID)
+        {
+        	GLint status = 0;
+        	glGetShaderiv(ID, GL_COMPILE_STATUS, &status);
+
+        	return status;
+        }
+
+        /**********************************************************/
+        void deleteShader(GLuint ID)
+        {
+        	if (ID)
+        	{
+        		glDeleteShader(ID);        		
+        	}
+        }
+
+        /**********************************************************/
+        GLuint createProgram()
+        {
+        	return glCreateProgram();
+        }
+
+        /**********************************************************/
+        void deleteProgram(GLuint ID)
+        {
+        	if (ID)
+        	{
+        		glDeleteProgram(ID);        		
+        	}
+        }
+
+        /**********************************************************/
+        void linkProgram(GLuint ID)
+        {
+        	glLinkProgram(ID);
+        }
 
 		/**********************************************************/
 		void clearColor(GLclampf r, GLclampf g, GLclampf b, GLclampf a)
@@ -98,7 +149,7 @@ namespace pegasus
 		{
 			glDisable(flag);
 		}
-		
+
 		/**********************************************************/
 		void checkErrors(const char* pFile, const char* pFunction, int line)
 		{
