@@ -40,9 +40,13 @@
 #include <pegasus/core/resources.hpp> // Loading and storing the Resources.xxx file.
 #include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Caught if the Resources.xxx file fails to load.
 #include <pegasus/core/window.hpp>              // Creating an sdl window.
+#include <pegasus/core/resource_manager.hpp>    // Registering factories.
 #include <pegasus/graphics/buffer.hpp>          // Generating a vertex buffer.
 #include <pegasus/graphics/vertex.hpp>          // Setting the vertices of the mesh.
 #include <pegasus/graphics/shader_program.hpp>  // Creating a shader program and linking glsl files.
+#include <pegasus/graphics/shader_program_factory.hpp>
+
+#include <pegasus/scripting/scripting_manager.hpp>
 
 using namespace pegasus;
 
@@ -51,10 +55,17 @@ using namespace pegasus;
 //====================
 int main(int argc, char** argv)
 {
+	// The scripting state should be first object to be instantiated.
+	sol::state& lua = ScriptingManager::getInstance().getState();
+	// Temporary binding of the shader type enum.
+	lua.new_enum("ShaderType",
+		"Vertex", gl::eShaderType::VERTEX,
+		"Fragment", gl::eShaderType::FRAGMENT);
+
 	// Create a logger object that will print messages to the console.
 	auto cl = std::make_unique<Logger>(std::make_unique<ConsolePolicy>());
 	// Create a logger object that will send messages to an external file.
-	auto fl = std::make_unique<Logger>(std::make_unique<FilePolicy>("log.txt"));
+	auto fl = std::make_unique<Logger>(std::make_unique<FilePolicy>("messages.log"));
 	// Register the console logger with the factory.
 	LoggerFactory::registerLogger("console.logger", std::move(cl));
 	LoggerFactory::registerLogger("file.logger", std::move(fl));
@@ -108,6 +119,12 @@ int main(int argc, char** argv)
 	Window window;
 	window.create(config);
 
+	// Creating the shader factory.
+	ShaderProgramFactory* pShaderFactory = new ShaderProgramFactory();
+	pShaderFactory->setService(factory.get(config.get<std::string>("Serialization.shader_format")));
+	// Registering the shader factory with the resource manager.
+	ResourceManager::getInstance().registerFactory(pShaderFactory);
+
 	// Create the temporary vertices.
 	Vertex2D_t v1; v1.position = glm::vec2(-0.5f, -0.5f);
 	Vertex2D_t v2; v2.position = glm::vec2( 0.5f, -0.5f);
@@ -131,13 +148,9 @@ int main(int argc, char** argv)
 
 	// Create the buffer with the description.
 	Buffer buffer(desc);
-	// Create the shader program.
-	ShaderProgram program;
-	// Attach two shaders.
-	program.attach(gl::eShaderType::VERTEX, "data/shaders/basic_vertex.glsl");
-	program.attach(gl::eShaderType::FRAGMENT, "data/shaders/basic_fragment.glsl");
-	// Compile and link the shaders to the program.
-	program.compile();
+
+	ShaderProgram* pShader = ResourceManager::getInstance().get<ShaderProgram>(resources.get("asset.shader.basic"));
+	pShader->compile();
 
 	// Continue to draw the window whilst it's running.
 	while (window.isRunning())
@@ -145,13 +158,13 @@ int main(int argc, char** argv)
 		// Clear the buffer.
 		window.clear();
 		// Bind the shader program.
-		ShaderProgram::bind(program);
+		ShaderProgram::bind(*pShader);
 		// Bind and draw the vertex buffer.
 		Buffer::bind(buffer);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		Buffer::unbind(buffer);
 		// Unbind the shader program.
-		ShaderProgram::bind(program);
+		ShaderProgram::bind(*pShader);
 		// Swap the buffers.
 		window.swap();
 	}

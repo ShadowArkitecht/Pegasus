@@ -24,16 +24,16 @@ ShaderProgram = {
     name = "basic shader",
     -- The individual shaders that make up this program.
     -- Stored as an array of tables.
-    shader = {
+    shaders = {
         {
             -- The source directory of the shader.
-            source = "data/assets/basic_vertex.glsl",
+            source = "data/shaders/basic_vertex.glsl",
             -- The type of shader.
             shader_type = ShaderType.Vertex
         },
         {
             -- The source directory of the shader.
-            source = "data/assets/basic_fragment.glsl",
+            source = "data/shaders/basic_fragment.glsl",
             -- The type of shader.
             shader_type = ShaderType.Fragment
         }

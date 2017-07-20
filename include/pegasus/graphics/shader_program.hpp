@@ -31,6 +31,7 @@
 //====================
 // Pegasus includes
 //====================
+#include <pegasus/core/asset.hpp>      // shader program is a type of retained asset.
 #include <pegasus/graphics/shader.hpp> // Storing different shader objects.
 
 namespace pegasus

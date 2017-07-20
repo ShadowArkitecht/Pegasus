@@ -30,8 +30,38 @@
 
 namespace pegasus
 {
+	//====================
+	// Forward declarations
+	//====================
+	class Logger;
+
 	class LuaSerializableService final : public ISerializableService
 	{
+	private:
+		//====================
+		// Member variables
+		//====================
+		/** Logging warnings from the Resources.lua file. */
+		Logger& m_logger;
+
+	private:
+		//====================
+		// Private methods
+		//====================
+		/**
+		 * @brief De-serializes an asset into a shader program object.
+		 * 
+		 * This method is invoked internally when an object is de-serializaed and it
+		 * is flagged as a shader program. This object will de-serialize the lua table into
+		 * a format that can be used to bind and utilize different shaders within a program.
+		 * The de-serialization of the shader will fail if no shaders have been defined.
+		 * 
+		 * @param name The file location of the lua script to de-serialize.
+		 * 
+		 * @returns A new shader program object.
+		 */
+		Asset* deserializeShaderProgram(const std::string& name) const;
+		
 	public:
 		//==================== 
 		// Ctors and dtor

@@ -26,7 +26,6 @@
 //====================
 // Pegasus includes
 //====================
-#include <pegasus/core/asset.hpp>   // Shader is a type of asset/resource.
 #include <pegasus/graphics/gl.hpp>  // Using abstracted openGL functions.
 
 namespace pegasus
@@ -36,11 +35,13 @@ namespace pegasus
 	//====================
 	class Logger;
 
-    class Shader final : public Asset
+    class Shader final
     {
     private:
     	/** Used to log warnings and debug messages. */
     	Logger&         m_logger;
+        /** The unique ID of the shader. */
+        GLuint          m_ID;
     	/** The source of the shader to compile. */
     	std::string     m_source;
     	/** The type of shader being registered. */
@@ -73,6 +74,16 @@ namespace pegasus
         //====================
         // Getters and setters
         //====================
+		/**
+		 * @brief Retrieves the unique ID of the shader.
+		 *
+		 * The ID is the unique identifier for this shader, when its functionality is needed,
+		 * this value is bound or referred to within the shader program object to link and attach.
+		 *
+		 * @returns The unique ID of the shader.
+		 */
+		GLuint getID() const;
+
         /**
          * @brief Retrieve the compilation state of the shader.
          * 

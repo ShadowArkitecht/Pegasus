@@ -41,6 +41,8 @@ namespace pegasus
 {
     class ResourceManager final : public Singleton<ResourceManager>
     {
+		friend class Singleton<ResourceManager>;
+
     private:
         /** A map of all registered asset factories within the manager. */
         std::unordered_map<std::type_index, std::unique_ptr<IAssetFactory>>m_factories;
@@ -143,7 +145,7 @@ namespace pegasus
         }
 
         // Attempt to load the resource with the factory.
-        return itr->second->load(name);
+        return static_cast<T*>(itr->second->load(name));
     } 
  
     //==================== 

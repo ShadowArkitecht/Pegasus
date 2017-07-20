@@ -106,7 +106,7 @@ namespace pegasus
 			std::vector<GLchar> log(logLength);
 			glGetProgramInfoLog(m_ID, logLength, &logLength, &log[0]);
 			// Log the warning and delete the id.
-			m_logger.warning("ShaderProgram", m_name, "failed:", &log[0]);
+			m_logger.warning("ShaderProgram:", m_name, "failed. Error:", &log[0]);
 			m_shaders.clear();
 			// Delete the program and set the compilation flag to false.
 			gl::deleteProgram(m_ID);
@@ -115,11 +115,11 @@ namespace pegasus
 		// Unlink the shaders from the program.
 		for (auto& shader : m_shaders)
 		{
-			glDetachShader(m_ID, shader.getID());
+			glDetachShader(m_ID, shader.getID()); 
 		}
 
 		// It's succeeded, log an message and set the flag to true.
-		m_logger.debug("ShaderProgram", m_name, "linked successfully.");
+		m_logger.debug("ShaderProgram:", m_name, "linked successfully.");
 		m_compiled = true;
 		// Check for OpenGL errors.
 		PEGASUS_GL_CHECK_ERRORS();

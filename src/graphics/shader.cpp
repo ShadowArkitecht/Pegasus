@@ -39,7 +39,7 @@ namespace pegasus
 	//====================
 	/**********************************************************/
 	Shader::Shader()
-		: Asset(), m_logger(LoggerFactory::getLogger("file.logger")), m_source(), m_type(), m_compiled(false)
+		: m_logger(LoggerFactory::getLogger("file.logger")), m_ID(0), m_source(), m_type(), m_compiled(false)
 	{
 		// Empty.
 	}
@@ -53,6 +53,12 @@ namespace pegasus
 	//====================
 	// Getters and setters
 	//====================
+	/**********************************************************/
+	GLuint Shader::getID() const
+	{
+		return m_ID;
+	}
+
 	/**********************************************************/
 	bool Shader::isCompiled() const
 	{
@@ -112,7 +118,7 @@ namespace pegasus
 			// Delete the shader as it failed to compile.
 			gl::deleteShader(m_ID);
 			// Log the issue.
-			m_logger.warning("Shader", m_name, "failed to compile:", &log[0]);
+			m_logger.warning("GLSL shader failed to compile:", &log[0]);
 		}
 		else
 		{
@@ -120,7 +126,7 @@ namespace pegasus
 			m_compiled = true;
 		}
 		// Success!
-		m_logger.debug("Shader", m_name, "compiled successfully");
+		m_logger.debug("GLSL shader compiled successfully");
 		// Clear the shader source.
 		m_source.clear();
 		// Check for any gl problems.

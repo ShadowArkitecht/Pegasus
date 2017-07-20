@@ -80,3 +80,7 @@ minor_version : uint = 0
 [Serialization]
 # Specifies the de-serialization format that the Resources.xxx file will use. 
 resource_format : string = "lua"
+# Specifies the de-serialization format that any shader program files will use.
+shader_format : string = "lua"
+# Specifies the de-serialization format that any texture files will use.
+texture_format : string = "lua"

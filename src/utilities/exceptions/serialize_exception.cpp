@@ -23,7 +23,7 @@
 //====================
 // Pegasus includes
 //====================
-#include <pegasus/utilities/iasset_factory.hpp> // class declaration.
+#include <pegasus/utilities/exceptions/serialize_exception.hpp> // Class declaration.
 
 namespace pegasus
 {
@@ -31,43 +31,26 @@ namespace pegasus
 	// Ctors and dtor
 	//====================
 	/**********************************************************/
-	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_pService(nullptr), m_type(type), m_threshold(threshold)
+	SerializeException::SerializeException(const char* msg)
+		: std::exception(msg)
 	{
 		// Empty.
 	}
-	
-	//====================
-	// Getters and setters
-	//====================
-	/**********************************************************/
-    ISerializableService* IAssetFactory::getService() const
-    {
-        return m_pService;
-    }
 
 	/**********************************************************/
-    void IAssetFactory::setService(ISerializableService& service)
-    {
-        m_pService = &service;
-    }
-	
-	/**********************************************************/
-	const std::type_index& IAssetFactory::getType() const
+	SerializeException::SerializeException(const std::string& msg)
+		: std::exception(msg.c_str())
 	{
-		return m_type;
+		// Empty.
 	}
-	
+
+	//====================
+	// Methods
+	//====================
 	/**********************************************************/
-	std::size_t IAssetFactory::getThreshold() const
+	const char* SerializeException::what() const
 	{
-		return m_threshold;
+		return std::exception::what();
 	}
-	
-	/**********************************************************/
-	void IAssetFactory::setThreshold(std::size_t threshold)
-	{
-		m_threshold = threshold;
-	}
-	
+ 
 } // namespace pegasus

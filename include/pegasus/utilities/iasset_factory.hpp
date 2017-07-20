@@ -34,7 +34,7 @@
 // Pegasus includes
 //==================== 
 #include <pegasus/utilities/non_copyable.hpp> // The factory cannot be copied.
-#include <pegasus/utilities/iserializable_service.hpp> // The de-serialization method.
+#include <pegasus/utilities/iserializable_service.hpp> // The serializable service for the asset factory.
 
 namespace pegasus
 {
@@ -70,11 +70,11 @@ namespace pegasus
 		// Member variables
 		//====================
         /** The injected serialization method this factory will utilitize. */
-        std::shared_ptr<ISerializableService> m_service;
+        ISerializableService* m_pService;
 		/** The unique object type that this asset factory is bound to/will produce. */
-	    std::type_index                       m_type; 
+	    std::type_index       m_type; 
 		/** The threshold in which un-used resources will be cleared from memory. */
-	    std::size_t                           m_threshold;
+	    std::size_t           m_threshold;
 	    
 	private:
 		//====================
@@ -146,7 +146,7 @@ namespace pegasus
          *
          * @param service The serializable service to be injected into the factory.
          */
-        void setService(ISerializableService* pService);
+        void setService(ISerializableService& service);
 
 	    /**
 	     * @brief Retrieves the type registed with this factory.
