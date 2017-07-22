@@ -157,7 +157,27 @@ namespace pegasus
 	/**********************************************************/
 	template <>
 	glm::ivec2 ConfigFile::get<glm::ivec2>(const std::string& variable) const;
+
+	/**********************************************************/
+	template <>
+	glm::vec2 ConfigFile::get<glm::vec2>(const std::string& variable) const;
+
+	/**********************************************************/
+	template <>
+	glm::ivec3 ConfigFile::get<glm::ivec3>(const std::string& variable) const;
+
+	/**********************************************************/
+	template <>
+	glm::vec3 ConfigFile::get<glm::vec3>(const std::string& variable) const;
 	
+	/**********************************************************/
+	template <>
+	glm::ivec4 ConfigFile::get<glm::ivec4>(const std::string& variable) const;
+
+	/**********************************************************/
+	template <>
+	glm::vec4 ConfigFile::get<glm::vec4>(const std::string& variable) const;
+
 } // namespace pegasus
 
 #endif//_PEGASUS_CONFIGE_FILE_HPP_

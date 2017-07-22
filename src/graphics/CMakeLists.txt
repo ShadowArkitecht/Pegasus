@@ -31,12 +31,14 @@ set(HEADER_FILES "${INCLUDE_DIR}/buffer.hpp"
 	             "${INCLUDE_DIR}/shader.hpp"
 	             "${INCLUDE_DIR}/shader_program.hpp"
 	             "${INCLUDE_DIR}/shader_program_factory.hpp"
+	             "${INCLUDE_DIR}/uniform.hpp"
 	             "${INCLUDE_DIR}/vertex.hpp")             
 
 set(SOURCE_FILES "${SOURCE_DIR}/buffer.cpp" 
 	             "${SOURCE_DIR}/gl.cpp"
 	             "${SOURCE_DIR}/shader.cpp"
 	             "${SOURCE_DIR}/shader_program.cpp"
+	             "${SOURCE_DIR}/uniform.cpp"
 	             "${SOURCE_DIR}/shader_program_factory.cpp")
 
 ################################################################################

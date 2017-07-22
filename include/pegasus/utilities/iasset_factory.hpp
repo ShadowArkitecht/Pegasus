@@ -33,8 +33,9 @@
 //==================== 
 // Pegasus includes
 //==================== 
-#include <pegasus/utilities/non_copyable.hpp> // The factory cannot be copied.
+#include <pegasus/utilities/non_copyable.hpp>          // The factory cannot be copied.
 #include <pegasus/utilities/iserializable_service.hpp> // The serializable service for the asset factory.
+#include <pegasus/core/resources.hpp>                  // Retrieving the resource from the Resources.xxx file.
 
 namespace pegasus
 {
@@ -75,7 +76,11 @@ namespace pegasus
 	    std::type_index       m_type; 
 		/** The threshold in which un-used resources will be cleared from memory. */
 	    std::size_t           m_threshold;
-	    
+	
+	protected:
+		/** Loading file locations from the Resources.xxx file. */
+		Resources m_resources;
+
 	private:
 		//====================
 		// Private ctors

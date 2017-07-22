@@ -56,11 +56,7 @@ using namespace pegasus;
 int main(int argc, char** argv)
 {
 	// The scripting state should be first object to be instantiated.
-	sol::state& lua = ScriptingManager::getInstance().getState();
-	// Temporary binding of the shader type enum.
-	lua.new_enum("ShaderType",
-		"Vertex", gl::eShaderType::VERTEX,
-		"Fragment", gl::eShaderType::FRAGMENT);
+	ScriptingManager::getInstance();
 
 	// Create a logger object that will print messages to the console.
 	auto cl = std::make_unique<Logger>(std::make_unique<ConsolePolicy>());
@@ -148,17 +144,21 @@ int main(int argc, char** argv)
 
 	// Create the buffer with the description.
 	Buffer buffer(desc);
-
-	ShaderProgram* pShader = ResourceManager::getInstance().get<ShaderProgram>(resources.get("asset.shader.basic"));
+	// Retrieve the shader.
+	ShaderProgram* pShader = ResourceManager::getInstance().get<ShaderProgram>("asset.shader.basic");
 	pShader->compile();
 
 	// Continue to draw the window whilst it's running.
 	while (window.isRunning())
 	{
+		// Process any input.
+		window.pollEvents();
 		// Clear the buffer.
 		window.clear();
 		// Bind the shader program.
 		ShaderProgram::bind(*pShader);
+		// Process the uniform variables of the shader.
+		pShader->process();
 		// Bind and draw the vertex buffer.
 		Buffer::bind(buffer);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

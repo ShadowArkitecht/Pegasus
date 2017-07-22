@@ -31,8 +31,9 @@
 //====================
 // Pegasus includes
 //====================
-#include <pegasus/core/asset.hpp>      // shader program is a type of retained asset.
-#include <pegasus/graphics/shader.hpp> // Storing different shader objects.
+#include <pegasus/core/asset.hpp>       // shader program is a type of retained asset.
+#include <pegasus/graphics/shader.hpp>  // Storing different shader objects.
+#include <pegasus/graphics/uniform.hpp> // Binds uniform variables to the shader.
 
 namespace pegasus
 {
@@ -47,12 +48,16 @@ namespace pegasus
 		//====================
 		// Member variables
 		//====================
+		/** A default representation of a shader. */
+		static ShaderProgram* m_pDefault;
 		/** Logging warnings and errors to the external file. */
-		Logger&             m_logger;
+		Logger&               m_logger;
 		/** A list of all shaders attached to this program. */
-		std::vector<Shader> m_shaders;
+		std::vector<Shader>   m_shaders;
+		/** Used to send variables as uniform values to the glsl shaders. */
+		Uniform               m_uniform;
 		/** The compilation flag for the compiling and linking of shaders. */
-		bool                m_compiled;
+		bool                  m_compiled;
 
 	public:
 		//====================
@@ -78,6 +83,17 @@ namespace pegasus
 		//====================
 		// Getters and setters
 		//====================
+		/**
+		 * @brief Retrieves a default representation of a shader program.
+		 * 
+		 * The default representation is used when a shader asset encountered issues
+		 * when being requested from an asset factory, the default is returned to prevent
+		 * crashes in the likelihood of undefined behavior.
+		 * 
+		 * @returns A default shader program.
+		 */
+		static ShaderProgram* getDefault();
+
 		/**
 		 * @brief Retrieves the compilation state of the shader program.
 		 * 

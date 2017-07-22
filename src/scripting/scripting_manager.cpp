@@ -24,6 +24,7 @@
 // Pegasus includes
 //====================
 #include <pegasus/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+#include <pegasus/graphics/gl.hpp>                 // Binding specific graphics API objects.
 
 namespace pegasus
 {
@@ -35,6 +36,19 @@ namespace pegasus
 		: Singleton<ScriptingManager>(), m_state()
 	{
 		m_state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::table, sol::lib::debug);
+		// Bind the different classes/objects/enums.
+		this->bindShaderType();
+	}
+
+	//====================
+	// Private methods
+	//====================
+	/**********************************************************/
+	void ScriptingManager::bindShaderType()
+	{
+		m_state.new_enum("ShaderType",
+			"Vertex", gl::eShaderType::VERTEX,
+			"Fragment", gl::eShaderType::FRAGMENT);
 	}
 
 	//====================

@@ -27,6 +27,7 @@
 #include <pegasus/graphics/shader_program.hpp>                    // Loading in and storing shader programs.
 #include <pegasus/utilities/logger_factory.hpp>                   // Retrieving the log file.
 #include <pegasus/utilities/exceptions/serialize_exception.hpp>   // Catching any thrown serialize exceptions.
+#include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Catching any thrown resource exceptions.
 
 namespace pegasus
 {
@@ -40,39 +41,56 @@ namespace pegasus
 		m_logger.debug("ShaderProgramFactory constructed.");
 	}
 
+	/**********************************************************/
+	ShaderProgramFactory::~ShaderProgramFactory()
+	{
+		// Iterate through all the retained assets and delete them.
+		for (auto& shader : m_shaders)
+		{
+			// Delete the shader program.
+			delete shader.second;
+		}
+	}
+
 	//====================
 	// Methods
 	//====================
 	/**********************************************************/
 	Asset* ShaderProgramFactory::load(const std::string& name) // override
 	{
-		// See if the shader being requested has already been loaded.
-		auto itr = m_shaders.find(name);
-		// It has been found, return a copy of that object.
-		if (itr != m_shaders.end())
-		{
-			return itr->second;
-		}
-
 		try
 		{
+			std::string file = m_resources.get(name);
+			// See if the shader being requested has already been loaded.
+			auto itr = m_shaders.find(file);
+			// It has been found, return a copy of that object.
+			if (itr != m_shaders.end())
+			{
+				return itr->second;
+			}
 			// De-serialize and create a new shader program.
-			auto shader = this->getService()->deserialize(eAssetType::SHADER, name);
+			auto shader = this->getService()->deserialize(eAssetType::SHADER, file);
 			// Insert the shader into the map.
-			m_shaders.insert({ name, shader });
+			m_shaders.insert({ file, shader });
 			// Return the new shader program.
 			return shader;
 		}
 		catch (SerializeException& e)
 		{
 			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
-			return nullptr;
+			return ShaderProgram::getDefault();
 		}
-		// Might aswell catch all, incase there's any problems that were no expected.
+		// Catch a wrong resource and return the default.
+		catch (NoResourceException& e)
+		{
+			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
+			return ShaderProgram::getDefault();
+		}
+		// Might aswell catch all, incase there's any problems that we're not expected.
 		catch (std::exception& e)
 		{
 			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
-			return nullptr;
+			return ShaderProgram::getDefault();
 		}
 	}
 

@@ -52,6 +52,8 @@ size : vec2i = (640, 480)
 # Controls whether the window will begin in a full-screen format. When the window is in fullscreen it ignores the defined
 # width and height of the window, until the window is minimized.
 is_fullscreen : boolean	= false
+# States the default background colour of the window. The default is set to gray.
+background_colour : vec4 = (0.5, 0.5, 0.5, 1.0)
 
 
 # The graphics section controls the specific graphical sections in regards to the OpenGL versions and bits for the depth

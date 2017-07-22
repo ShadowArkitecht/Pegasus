@@ -32,15 +32,38 @@
 #include <pegasus/utilities/logger_factory.hpp> // Logging messages to the external file.
 
 namespace pegasus
-{	
+{
+	//====================
+	// Static variables
+	//====================
+	ShaderProgram* ShaderProgram::m_pDefault = nullptr;
+
+	//====================
+	// Constant variables
+	//====================
+	const std::string DEFAULT_VERTEX_SHADER = 
+		R"(#version 330 core
+		layout (location = 0) in vec2 position;
+		void main() {
+			gl_Position = vec4(position, 0.0, 1.0);
+		})";	
+
+	const std::string DEFAULT_FRAGMENT_SHADER =
+		R"(#version 330 core
+		out vec4 colour;
+		void main() {
+			colour = vec4(1.0);
+		})";
+
 	//====================
 	// Ctors and dtor
 	//====================
 	/**********************************************************/
 	ShaderProgram::ShaderProgram()
-		: Asset(), m_logger(LoggerFactory::getLogger("file.logger")), m_shaders(), m_compiled(false)
+		: Asset(), m_logger(LoggerFactory::getLogger("file.logger")), m_shaders(), m_uniform(), m_compiled(false)
 	{
 		m_ID = gl::createProgram();
+		m_uniform.setID(m_ID);
 	}
 
 	/**********************************************************/
@@ -52,6 +75,28 @@ namespace pegasus
 	//====================
 	// Getters and setters
 	//====================
+	/**********************************************************/
+	ShaderProgram* ShaderProgram::getDefault()
+	{
+		if (!m_pDefault)
+		{
+			m_pDefault = new ShaderProgram();
+			// Create the vertex shader.
+			Shader vs;
+			vs.loadFromSource(gl::eShaderType::VERTEX, DEFAULT_VERTEX_SHADER);
+			// Create the fragment shader.
+			Shader fs;
+			fs.loadFromSource(gl::eShaderType::FRAGMENT, DEFAULT_FRAGMENT_SHADER);
+			// Attach the shaders.
+			m_pDefault->attach(vs);
+			m_pDefault->attach(fs);
+			// Compile that bad boy.
+			m_pDefault->compile();
+		}
+
+		return m_pDefault;
+	}
+
 	/**********************************************************/
 	bool ShaderProgram::isCompiled() const
 	{
@@ -128,7 +173,7 @@ namespace pegasus
 	/**********************************************************/
 	void ShaderProgram::process()
 	{
-		// TODO(Ben): pass in uniform variables.
+		m_uniform.set("u_colour", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 
 	/**********************************************************/

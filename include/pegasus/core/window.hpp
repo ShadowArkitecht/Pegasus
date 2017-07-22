@@ -66,6 +66,8 @@ namespace pegasus
 		std::string   m_title;
 		/** The dimensions of the window. */
 		glm::ivec2    m_size;
+		/** The background colour of the window. */
+		glm::vec4     m_background;
 		/** Whether the window is currently running. */
 		bool          m_running;
 
@@ -146,6 +148,26 @@ namespace pegasus
 		 */
 		void setSize(const glm::ivec2& size);
 
+		/**
+		 * @brief Retrieves the background colour of the window.
+		 * 
+		 * The background colour refers to the default colour that will appear if no renderable object
+		 * is obscuring it within the scene. It is set to a default gray within the configuration file.
+		 * 
+		 * @returns The colour of the background.
+		 */
+		glm::vec4 getBackgroundColour() const;
+
+		/**
+		 * @brief Sets the background colour of the window.
+		 * 
+		 * The background colour refers to the default colour that will appear if no renderable object
+		 * is obscuring it within the scene. It is set to a default gray within the configuration file.
+		 * 
+		 * @param The new colour of the background.
+		 */
+		void setBackgroundColour(const glm::vec4& colour);
+
 		/** @brief Retrieves the current running state of the Window.
 		 *
 		 * When the Window is created, it is automatically set to running upon
@@ -169,6 +191,15 @@ namespace pegasus
 		 * @param config The parameters of the Window retrieved from the config file.
 		 */
 		void create(const ConfigFile& config);
+
+		/**
+		 * @brief Polls the events of the window.
+		 * 
+		 * So that the window can react to events and interactions, it must poll and loop
+		 * through each input event and process how these will impact the application. If the
+		 * events are not polled, the window cannot be interacted with, or closed.
+		 */
+		void pollEvents();
 
 		/** @brief Closes the current Window object.
 		 *

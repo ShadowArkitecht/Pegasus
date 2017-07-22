@@ -72,6 +72,15 @@ namespace pegasus
 		 */
 		explicit ScriptingManager();
 
+		/**
+		 * @brief Binds the shader type enum to the scripting interface.
+		 * 
+		 * This method is invoked when the scripting API is first instantiated, it will bind
+		 * the eShaderType enum to the scripts so that it can be used within the serialized
+		 * shader program tables.
+		 */
+		void bindShaderType();
+
 	public:
 		//====================
 		// Dtor

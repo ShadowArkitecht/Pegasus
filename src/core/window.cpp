@@ -46,7 +46,7 @@ namespace pegasus
 	/**********************************************************/
 	Window::Window()
 		: NonCopyable(), m_logger(LoggerFactory::getLogger("file.logger")), m_pHandle(nullptr), m_context(),
-			m_settings(), m_title(), m_size(), m_running(false)
+			m_settings(), m_title(), m_size(), m_background(), m_running(false)
 	{
 		// Empty.
 	}
@@ -101,6 +101,18 @@ namespace pegasus
 	}
 
 	/**********************************************************/
+	glm::vec4 Window::getBackgroundColour() const
+	{
+		return m_background;
+	}
+
+	/**********************************************************/
+	void Window::setBackgroundColour(const glm::vec4& colour)
+	{
+		m_background = colour;
+	}
+
+	/**********************************************************/
 	bool Window::isRunning() const
 	{
 		return m_running;
@@ -115,6 +127,7 @@ namespace pegasus
 		// Set the member variables from the configuration file.
 		m_title = config.get<std::string>("Window.title");
 		m_size = config.get<glm::ivec2>("Window.size");
+		m_background = config.get<glm::vec4>("Window.background_colour");
 		// Initialize SDL and the needed modules.
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO))
 		{
@@ -168,6 +181,21 @@ namespace pegasus
 	}
 
 	/**********************************************************/
+	void Window::pollEvents()
+	{
+		SDL_Event e;
+		// Poll all the events and process the output.
+		while (SDL_PollEvent(&e))
+		{
+			// If the 'x' button has been clicked, close the window.
+			if (e.type == SDL_QUIT)
+			{
+				this->close();
+			}
+		}
+	}
+
+	/**********************************************************/
 	void Window::close()
 	{
 		m_running = false;
@@ -176,7 +204,7 @@ namespace pegasus
 	/**********************************************************/
 	void Window::clear() const
 	{
-		gl::clearColor(0.5, 0.5, 0.5, 1.0);
+		gl::clearColor(m_background.x, m_background.y, m_background.z, m_background.w);
 		gl::clear();
 	}
 

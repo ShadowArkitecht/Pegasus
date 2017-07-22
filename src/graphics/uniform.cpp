@@ -23,7 +23,7 @@
 //====================
 // Pegasus includes
 //====================
-#include <pegasus/utilities/iasset_factory.hpp> // class declaration.
+#include <pegasus/graphics/uniform.hpp> // Class declaration.
 
 namespace pegasus
 {
@@ -31,43 +31,37 @@ namespace pegasus
 	// Ctors and dtor
 	//====================
 	/**********************************************************/
-	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_pService(nullptr), m_type(type), m_threshold(threshold), m_resources()
+	Uniform::Uniform()
+		: m_ID(0)
 	{
 		// Empty.
 	}
-	
+
 	//====================
 	// Getters and setters
 	//====================
 	/**********************************************************/
-    ISerializableService* IAssetFactory::getService() const
-    {
-        return m_pService;
-    }
+	void Uniform::setID(GLuint ID)
+	{
+		m_ID = ID;
+	}
 
+	//====================
+	// Private methods
+	//====================
 	/**********************************************************/
-    void IAssetFactory::setService(ISerializableService& service)
-    {
-        m_pService = &service;
-    }
-	
-	/**********************************************************/
-	const std::type_index& IAssetFactory::getType() const
+	GLint Uniform::getLocation(const std::string& name) const
 	{
-		return m_type;
+		return glGetUniformLocation(m_ID, name.c_str());
 	}
-	
+
+	//====================
+	// Methods
+	//====================
 	/**********************************************************/
-	std::size_t IAssetFactory::getThreshold() const
+	void Uniform::setParameter(GLint location, const glm::vec4& vector) const
 	{
-		return m_threshold;
+		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 	}
-	
-	/**********************************************************/
-	void IAssetFactory::setThreshold(std::size_t threshold)
-	{
-		m_threshold = threshold;
-	}
-	
-} // namespace pegasus
+
+} // namespace pegasus 

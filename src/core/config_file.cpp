@@ -114,6 +114,93 @@ namespace pegasus
 		return glm::ivec2(std::stoi(elements.at(0)), std::stoi(elements.at(1)));
 	}
 
+	/**********************************************************/
+	template <> 
+	glm::vec2 ConfigFile::get<glm::vec2>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::vec2(std::stof(elements.at(0)), std::stof(elements.at(1)));
+	}
+
+	/**********************************************************/
+	template <> 
+	glm::ivec3 ConfigFile::get<glm::ivec3>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::ivec3(std::stoi(elements.at(0)), std::stoi(elements.at(1)), std::stoi(elements.at(2)));
+	}
+
+	/**********************************************************/
+	template <> 
+	glm::vec3 ConfigFile::get<glm::vec3>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::vec3(std::stof(elements.at(0)), std::stof(elements.at(1)), std::stof(elements.at(2)));
+	}
+
+	/**********************************************************/
+	template <> 
+	glm::ivec4 ConfigFile::get<glm::ivec4>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::ivec4(std::stoi(elements.at(0)), std::stoi(elements.at(1)), 
+						  std::stoi(elements.at(2)), std::stoi(elements.at(3)));
+	}
+
+	/**********************************************************/
+	template <> 
+	glm::vec4 ConfigFile::get<glm::vec4>(const std::string& variable) const
+	{
+		std::stringstream ss(m_variables.at(variable));
+		std::vector<std::string> elements;
+
+		while (ss.good())
+		{
+			std::string element;
+			std::getline(ss, element, ',');
+			elements.push_back(element);
+		}
+		
+		return glm::vec4(std::stof(elements.at(0)), std::stof(elements.at(1)), 
+						 std::stof(elements.at(2)), std::stof(elements.at(3)));
+	}
+
 	//==================== 
 	// Private methods
 	//====================
@@ -151,7 +238,8 @@ namespace pegasus
 
 			m_variables.insert({ variable, value });
 		}
-		else if (datatype.substr(0, 4) == "vec2")
+		else if (datatype == "vec2" || datatype == "vec2i" || datatype == "vec3" || datatype == "vec3i" || 
+			     datatype == "vec4" || datatype == "vec4i")
 		{
 			if (value.at(0) != '(' && value.at(value.length() - 1) != ')')
 			{

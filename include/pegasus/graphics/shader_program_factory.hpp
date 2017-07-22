@@ -64,9 +64,14 @@ namespace pegasus
 		explicit ShaderProgramFactory();
 
 		/**
-		 * @brief Default constructor.	
+		 * @brief Destructor for the ShaderProgramFactory.
+		 * 
+		 * The shader program is wholly responsible for the lifetime of shader programs.
+		 * When the destructor is invoked, it will delete all of the retained resources
+		 * and free the memory. This will typically only happen at the end of the programs
+		 * life-time.	
 		 */
-		~ShaderProgramFactory() = default;
+		~ShaderProgramFactory();
 
 		/**
 		 * @brief Loads an external serialized file and stores it as an asset.

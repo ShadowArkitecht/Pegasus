@@ -23,6 +23,11 @@
 #version 330 core
 
 //====================
+// Uniform variables
+//====================
+uniform vec4 u_colour;
+
+//====================
 // Out variables
 //====================
 out vec4 diffuse_colour;
@@ -33,5 +38,5 @@ out vec4 diffuse_colour;
 void main()
 {
 	// Set the diffuse colour of the fragment and output it.
-	diffuse_colour = vec4(1.0, 0.0, 0.0, 1.0);
+	diffuse_colour = u_colour;
 }
