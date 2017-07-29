@@ -61,7 +61,21 @@ namespace pegasus
 		 * @returns A new shader program object.
 		 */
 		Asset* deserializeShaderProgram(const std::string& name) const;
-		
+
+		/**
+		 * @brief De-serializes an asset into a Texture object.
+		 * 
+		 * This method is invoked internally when an object is de-serializaed and it
+		 * is flagged as a texture. This object will de-serialize the lua table into
+		 * a format that can be used to bind and utilize different textures within the application.
+		 * The de-serialization of the texture will fail if no image source has been defined.
+		 * 
+		 * @param name The file location of the lua script to de-serialize.
+		 * 
+		 * @returns A new Texture object.
+		 */		
+		Asset* deserializeTexture(const std::string& name) const;
+
 	public:
 		//==================== 
 		// Ctors and dtor
@@ -103,8 +117,10 @@ namespace pegasus
 		 * array. If the Resources file is not found or can't be opened, a NoResourceException will be thrown.
 		 * 
 		 * @param filename The file location of the Resources.lua file.
+		 * 
+		 * @returns A map of resources and their subsequent names.
 		 */
-		std::unordered_map<std::string, std::string> deserializeResources(const std::string& filename) const override;
+		std::unordered_map<std::string, Resource_t> deserializeResources(const std::string& filename) const override;
 	};
 
 } // namespace pegasus

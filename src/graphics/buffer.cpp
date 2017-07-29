@@ -21,10 +21,16 @@
 */
 
 //====================
+// C++ includes
+//====================
+#include <cstddef>                     // Using the offset macro.
+
+//====================
 // Pegasus includes
 //====================
 #include <pegasus/graphics/buffer.hpp> // Class declaration.
 #include <pegasus/graphics/gl.hpp>     // OpenGL encapsulated functions.
+#include <pegasus/graphics/vertex.hpp>
 
 namespace pegasus
 {
@@ -33,23 +39,19 @@ namespace pegasus
 	//====================
 	/**********************************************************/
 	Buffer::Buffer()
-		: m_ID(0), m_type()
+		: m_ID(gl::genBuffer()), m_type()
 	{
 		// Empty.
 	}
 
 	/**********************************************************/
-	Buffer::Buffer(const BufferDescription& description)
-		: m_ID(0), m_type(description.bufferType)
+	Buffer::Buffer(const BufferDescription_t& description)
+		: m_ID(gl::genBuffer()), m_type(description.bufferType)
 	{
-		// Generate the unique ID for the buffer.
-		m_ID = gl::genBuffer();
 		// Bind the buffer to define its behavior.
 		Buffer::bind(*this);
 		// Populate the buffer with specific information.
-		gl::bufferData(description.bufferType, description.stride * description.size, description.pData, description.drawType);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
-		glEnableVertexAttribArray(0);
+		this->allocate(description);
 		// Unbind the buffer to set the state back to normal.
 		Buffer::unbind(*this);
 		// Check for errors.
@@ -84,6 +86,20 @@ namespace pegasus
 	//====================
 	// Methods
 	//====================
+	/**********************************************************/
+	void Buffer::allocate(const BufferDescription_t& description)
+	{
+		// Populate the buffer with specific information.
+		gl::bufferData(description.bufferType, description.stride * description.size, description.pData, description.drawType);
+		// Sets the offset of the vertex position.
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, description.stride, reinterpret_cast<GLvoid*>(offsetof(Vertex2D_t, position)));
+		// Sets the offset of the texture position.
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, description.stride, reinterpret_cast<GLvoid*>(offsetof(Vertex2D_t, texCoord)));
+		// Enable the vertex attributes.
+		gl::enableVertexAttributeArray(0);
+		gl::enableVertexAttributeArray(1);
+	}
+
 	/**********************************************************/
 	void Buffer::bind(const Buffer& buffer)
 	{

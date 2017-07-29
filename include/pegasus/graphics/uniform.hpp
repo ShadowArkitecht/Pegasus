@@ -71,6 +71,17 @@ namespace pegasus
 		 * @brief Sets the value of a uniform variable.
 		 *
 		 * This method is used to set a uniform variable to the value
+		 * of an integer.
+		 *
+		 * @param location The location of the uniform within the shader.
+		 * @param value    The integer value to send to the shader.
+		 */
+		void setParameter(GLint location, int value) const;
+
+		/**
+		 * @brief Sets the value of a uniform variable.
+		 *
+		 * This method is used to set a uniform variable to the value
 		 * of a vec4 object.
 		 *
 		 * @param location The location of the uniform within the shader.
@@ -127,6 +138,7 @@ namespace pegasus
 		template <typename T>
 		void set(const std::string& name, T value) const;
 	};
+	
 
 	//====================
 	// Methods

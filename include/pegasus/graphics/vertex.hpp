@@ -34,6 +34,8 @@ namespace pegasus
 	{
 		/** The position of the vector in 2D space.*/
 		glm::vec2 position;
+		/** The uv-coordinates of the vertex. */
+		glm::vec2 texCoord;
 	};
 
 } // namespace pegasus

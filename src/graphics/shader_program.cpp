@@ -173,7 +173,7 @@ namespace pegasus
 	/**********************************************************/
 	void ShaderProgram::process()
 	{
-		m_uniform.set("u_colour", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_uniform.set("u_texture", 0);
 	}
 
 	/**********************************************************/

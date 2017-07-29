@@ -29,6 +29,7 @@
 #include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Throwing an exception if there were any issues with the resource handling.
 #include <pegasus/graphics/shader_program.hpp>                    // De-serializing shader program objects.
 #include <pegasus/utilities/exceptions/serialize_exception.hpp>   // Throwing errors if any de-serialization has failed.
+#include <pegasus/graphics/texture.hpp>                           // De-serializing texture objects.
 
 namespace pegasus
 {
@@ -91,6 +92,49 @@ namespace pegasus
 		return pProgram;
 	}
 
+	/**********************************************************/
+	Asset* LuaSerializableService::deserializeTexture(const std::string& name) const
+	{
+		// Retrieve the lua state.
+		sol::state& lua = ScriptingManager::getInstance().getState();
+		// Load the specified script.
+		sol::function_result result = lua.script_file(name);
+		// Check if there are no issues with the script, if there is, throw an exception.
+		if (!result.valid())
+		{
+			throw SerializeException(std::string("Unable to de-serialize file:") + name);
+		}
+
+		// Get the root of the texture.
+		sol::table root = lua["Texture"];
+		// Get the variables
+		// Retrieve the name of the shader, if it's not defined, just set it to an empty string.
+		std::string textureName = root.get_or("name", std::string());
+		// Get the texture type.
+		sol::object type = root["texture_type"];
+		// Get the image source.
+		std::string source = root.get_or("source", std::string());
+		// There is no image, throw an exception.
+		if (source.empty())
+		{
+			throw SerializeException(std::string("No image source has been declared in file:") + name);
+		}
+		// Get the wrapping mode.
+		sol::object wrap = root["wrap_mode"];
+		// Get the filtering mode.
+		sol::object filter = root["filter"];
+		// Create a texture description and populate its values.
+		TextureDescription_t desc;
+		memset(&desc, 0, sizeof(TextureDescription_t));
+
+		desc.source = source;
+		desc.type = type.as<gl::eTextureType>();
+		desc.filtering = filter.as<gl::eFilterType>();
+		desc.wrapping = filter.as<gl::eWrapType>();
+		// Create the texture from the description and return it.
+		return new Texture(desc);
+	}
+
 	//====================
 	// Methods
 	//====================
@@ -101,13 +145,16 @@ namespace pegasus
 		{
 		case eAssetType::SHADER:
 			return this->deserializeShaderProgram(name);
+
+		case eAssetType::TEXTURE:
+			return this->deserializeTexture(name);
 		}
 
 		return nullptr;
 	}
 
 	/**********************************************************/
-	std::unordered_map<std::string, std::string> LuaSerializableService::deserializeResources(const std::string& filename) const
+	std::unordered_map<std::string, Resource_t> LuaSerializableService::deserializeResources(const std::string& filename) const
 	{
 		// Retrieve the lua state.
 		sol::state& lua = ScriptingManager::getInstance().getState();
@@ -121,22 +168,28 @@ namespace pegasus
 		// Grab the root table.
 		sol::table root = lua["Resources"];
 		// Populate the resources being stored in the table.
-		std::unordered_map<std::string, std::string> resources;
+		std::unordered_map<std::string, Resource_t> resources;
 		for (std::size_t i = 0; i < root.size(); i++)
 		{
-			sol::table resource = root[i + 1];
+			sol::table r = root[i + 1];
 			// Check to see the resource elements exist.
-			std::string name = resource.get_or("name", std::string());
-			std::string source = resource.get_or("source", std::string());
+			std::string name = r.get_or("name", std::string());
 
 			// The names don't exist, log a warning.
-			if (name.empty() || source.empty())
+			if (name.empty())
 			{
-				m_logger.warning("Resource unable to de-serialize correctly. name:", name, ", source:", source);
+				m_logger.warning("Resource unable to de-serialize correctly. A name has not been defined.");
 				continue;
 			}
+			
+			std::string source = r.get_or("source", std::string());
+			sol::object type = r["asset_type"];
 
-			resources.insert({ name, source });
+			Resource_t resource;
+			resource.path = source;
+			resource.type = type.as<eAssetType>();
+
+			resources.insert({ name, resource });
 		}
 
 		return resources;

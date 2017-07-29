@@ -33,10 +33,11 @@
 //==================== 
 // Pegasus includes
 //==================== 
+#include <pegasus/core/resource.hpp>                   // A struct representing a single resource.
 #include <pegasus/utilities/iserializable_service.hpp> // De-serializing the resources into a format the engine can use.
 
 namespace pegasus
-{
+{   
     /**
      * @author Benjamin Carter
      * 
@@ -62,7 +63,7 @@ namespace pegasus
         // Member variables
         //==================== 
         /** Stores all of the file locations of the defined resources.*/
-        static std::unordered_map<std::string, std::string> m_resources;
+        static std::unordered_map<std::string, Resource_t> m_resources;
 		/** The unique serializable service type assigned to de-serialize the Resources file. */
 		static ISerializableService* m_pService;
 
@@ -96,20 +97,20 @@ namespace pegasus
 		 void setService(ISerializableService& service);
 
         /**
-         * @brief Retrieves a resources file location.
+         * @brief Retrieves a resource object from the map.
          *
          * When a resource is requested, it will utilitise the loaded
-         * Resoures.xml file and search for the specified name. If the name is
-         * found it will return the mapped file location. If the resource has
+         * Resoures.xxx file and search for the specified name. If the name is
+         * found it will return the mapped resource object. If the resource has
          * not been found, a NoResourceException will be thrown.
          *
          * @param name The name of the resource within the Resources.xml file.
          *
-         * @returns The file location of the requested resource.
+         * @returns The relevant Resource object.
          * 
          * @throws NoResourceException If the resource is not found.
          */
-        std::string get(const std::string& name) const;
+        const Resource_t& get(const std::string& name) const;
     
         //==================== 
         // Methods

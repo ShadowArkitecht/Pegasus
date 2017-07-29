@@ -26,12 +26,25 @@
 // Attributes
 //====================
 layout (location = 0) in vec2 position;
+layout (location = 1) in vec2 uv_coords;
+
+//====================
+// Interfaces
+//====================
+out VS_OUT
+{
+	vec2 uv_coords;
+
+} vs_out;
 
 //====================
 // Functions
 //====================
 void main()
 {
+	// Pass the variables to the interface.
+	vs_out.uv_coords = uv_coords;
+	
 	// Set the position of the processing vertex.
 	gl_Position = vec4(position, 0.0, 1.0); 
 }

@@ -20,8 +20,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _PEGASUS_SHADER_PROGRAM_FACTORY_HPP_
-#define _PEGASUS_SHADER_PROGRAM_FACTORY_HPP_
+#ifndef _PEGASUS_TEXTURE_FACTORY_HPP_
+#define _PEGASUS_TEXTURE_FACTORY_HPP_
 
 //====================
 // Pegasus includes
@@ -30,24 +30,24 @@
 
 namespace pegasus
 {	
-	class ShaderProgramFactory final : public IAssetFactory
+	class TextureFactory final : public IAssetFactory
 	{
 	public:
 		//====================
 		// Ctors and dtor
 		//====================
 		/**
-		 * @brief Default constructor for the shader program factory.
+		 * @brief Default constructor for the texture factory.
 		 * 
 		 * The default constructor will set the member variables to default
 		 * values and set the logger to log messages to the external log file.
 		 */
-		explicit ShaderProgramFactory();
+		explicit TextureFactory();
 
 		/**
 		 * @brief Default destructor.
 		 */
-		~ShaderProgramFactory() = default;
+		~TextureFactory() = default;
 
 		/**
 		 * @brief Loads an external serialized file and stores it as an asset.
@@ -65,4 +65,4 @@ namespace pegasus
 
 } // namespace pegasus
 
-#endif//_PEGASUS_SHADER_PROGRAM_FACTORY_HPP_
+#endif//_PEGASUS_TEXTURE_FACTORY_HPP_

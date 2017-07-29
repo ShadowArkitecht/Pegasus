@@ -65,7 +65,7 @@ namespace pegasus
 		 * 
 		 * @param description [description]
 		 */
-		explicit Buffer(const BufferDescription& description);
+		explicit Buffer(const BufferDescription_t& description);
 
 		/**
 		 * @brief Destructor for the Buffer.
@@ -104,6 +104,17 @@ namespace pegasus
 		//====================
 		// Methods
 		//====================
+		/**
+		 * @brief Allocates the description for the buffer.
+		 *
+		 * When this method is invoked, it can be used to populate the buffer with the specified
+		 * rendering information. The buffer can be constantly re-allocated to change its's subsequent
+		 * behavior.
+		 *
+		 * @param description The information contained within the buffer.
+		 */
+		void allocate(const BufferDescription_t& description);
+
 		/**
 		 * @brief Binds the specified buffer as the current context.
 		 * 

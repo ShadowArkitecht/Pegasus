@@ -59,6 +59,12 @@ namespace pegasus
 	// Methods
 	//====================
 	/**********************************************************/
+	void Uniform::setParameter(GLint location, int value) const
+	{
+		glUniform1i(location, value);
+	}
+
+	/**********************************************************/
 	void Uniform::setParameter(GLint location, const glm::vec4& vector) const
 	{
 		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);

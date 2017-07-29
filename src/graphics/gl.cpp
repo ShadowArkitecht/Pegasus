@@ -69,6 +69,12 @@ namespace pegasus
 			glBufferData(static_cast<GLenum>(bufferType), size, pData, static_cast<GLenum>(drawType));
 		}
 
+		/**********************************************************/
+		void enableVertexAttributeArray(GLint location)
+		{
+			glEnableVertexAttribArray(location);
+		}
+
         /**********************************************************/
         GLuint createShader(eShaderType type)
         {
@@ -118,6 +124,22 @@ namespace pegasus
         void linkProgram(GLuint ID)
         {
         	glLinkProgram(ID);
+        }
+
+        /**********************************************************/
+        GLuint genTexture()
+        {
+        	// Generate the ID for the texture.
+        	GLuint ID = 0;
+        	glGenTextures(1, &ID);
+
+        	return ID;
+        }
+
+        /**********************************************************/
+        void bindTexture(eTextureType type, GLuint ID)
+        {
+        	glBindTexture(static_cast<GLenum>(type), ID);
         }
 
 		/**********************************************************/

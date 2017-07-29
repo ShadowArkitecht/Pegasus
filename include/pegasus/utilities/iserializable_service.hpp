@@ -9,7 +9,7 @@
 //==================== 
 // Pegasus includes
 //==================== 
-#include <pegasus/core/asset.hpp> // Need access to eAssetType enum class.
+#include <pegasus/core/resource.hpp> // Represents a single resource.
 
 namespace pegasus
 {
@@ -72,7 +72,7 @@ namespace pegasus
 		 *
 		 * @returns A list of all the assets within the resources file.
 		 */
-		virtual std::unordered_map<std::string, std::string> deserializeResources(const std::string& filename) const = 0;
+		virtual std::unordered_map<std::string, Resource_t> deserializeResources(const std::string& filename) const = 0;
     };
 
 } // namespace pegasus

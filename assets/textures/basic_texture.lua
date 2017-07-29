@@ -21,11 +21,13 @@
 -- An example of a serialized texture.
 Texture = {
     -- The name of the texture object. Used for debugging purposes.
-    name = "basic diffuse texture",
-    -- The file location of the image object to use.
-    source = "data/textures/test_diffuse.png",
+    name = "Basic Texture",
+    -- The type of texture to create.
+    texture_type = TextureType.Texture2D,
+    -- The file location of the image to use.
+    source = "data/textures/image.png",
     -- How the texture will apply to the current bound buffer.
-    mode = WrapMode.Clamp,
+    wrap_mode = WrapType.Clamp,
     -- How the pixels will behave on the bound buffer.
-    filter = Filter.Nearest
+    filter = FilterType.Nearest
 }

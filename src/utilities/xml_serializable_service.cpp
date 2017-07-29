@@ -52,9 +52,9 @@ namespace pegasus
 	}
 
 	/**********************************************************/
-	std::unordered_map<std::string, std::string> XmlSerializableService::deserializeResources(const std::string& filename) const
+	std::unordered_map<std::string, Resource_t> XmlSerializableService::deserializeResources(const std::string& filename) const
 	{
-		std::unordered_map<std::string, std::string> resources;
+		std::unordered_map<std::string, Resource_t> resources;
 
 		// Load the xml document.
 		pugi::xml_document document;
@@ -70,7 +70,13 @@ namespace pegasus
 		pugi::xml_node root = document.child("Resources");
 		for (auto& resource : root.children("Resource"))
 		{
-			resources.insert({ resource.child("Name").child_value() , resource.child("Source").child_value() });
+			std::string type = resource.child("AssetType").child_value();
+
+			Resource_t r;
+			r.path = resource.child("Source").child_value();
+			r.type = type == "Shader" ? eAssetType::SHADER : type == "Texture" ? eAssetType::TEXTURE : eAssetType::NONE;
+
+			resources.insert({ resource.child("Name").child_value() , r });
 		}
 
 		return resources;

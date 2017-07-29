@@ -58,6 +58,28 @@ namespace pegasus
             FRAGMENT = GL_FRAGMENT_SHADER
         };
 
+		enum class eTextureType
+		{
+			/** The texture type of the image. */
+			TEXTURE_2D = GL_TEXTURE_2D
+		};
+
+		enum class eFilterType
+		{
+			/** The pixels of the texture will be applied with neighbouring pixels in mind. */
+			NEAREST = GL_NEAREST,
+			/** The pixels of the textures will be applied linearly. */
+			LINEAR = GL_LINEAR
+		};
+
+		enum class eWrapType
+		{
+			/** The image will be clamped to the rendering buffer. */
+			CLAMP = GL_CLAMP,
+			/** The image will repeat (without stretching) across the rendering buffer. */
+			REPEAT = GL_REPEAT
+		};
+
 		//====================
 		// Functions
 		//====================
@@ -109,6 +131,17 @@ namespace pegasus
 		 * @param drawType   How the buffer will be used and drawn.
 		 */
 		void bufferData(eBufferType bufferType, std::size_t size, void* pData, eDrawType drawType);
+
+		/**
+		* @brief Enables a vertex attribute array, for communication with shaders.
+		*
+		* Vertex atrribute arrays are for enabling contact between the vertices of a mesh, and glsl
+		* shaders. For each attribute assigned, it will have a mirrored variable as a location variable
+		* within the vertex shader. By default the attributes enabled are for vertex position and uv-coordinates.
+		* 
+		* @param location The location of the vertex attribute array to activate.
+		*/
+		void enableVertexAttributeArray(GLint location);
 
         /**
          * @brief Creates a new shader ID.
@@ -186,6 +219,27 @@ namespace pegasus
          * @param ID The id of the program to link.
          */
         void linkProgram(GLuint ID);
+
+        /**
+         * @brief Generates an ID for a texture object.
+         * 
+         * This method is invoked within the Texture object to create a unique ID for the texture,
+         * which when bound will render the texture on the currently bound context.
+         * 
+         * @returns The ID of the generated texture.
+         */
+        GLuint genTexture();
+
+        /**
+         * @brief Binds the texture to the rendering context.
+         * 
+         * When the texture is bound, if it is utilized by the currently bound shader, it will use
+         * the texture and apply it to any rendering meshes that will utilise this behavior.
+         * 
+         * @param type The type of texture bound.
+         * @param ID The ID of the texture to bind. 
+         */
+        void bindTexture(eTextureType type, GLuint ID);
 
 		/**
 		 * @brief Clears the buffer to the specified colour.

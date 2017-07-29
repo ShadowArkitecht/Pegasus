@@ -24,6 +24,7 @@
 // Pegasus includes
 //====================
 #include <pegasus/utilities/iasset_factory.hpp> // class declaration.
+#include <pegasus/utilities/logger_factory.hpp> // Retrieving the logger.
 
 namespace pegasus
 {
@@ -32,9 +33,20 @@ namespace pegasus
 	//====================
 	/**********************************************************/
 	IAssetFactory::IAssetFactory(const std::type_index& type, std::size_t threshold/*= 10*/)
-		: m_pService(nullptr), m_type(type), m_threshold(threshold), m_resources()
+		: m_pService(nullptr), m_type(type), m_threshold(threshold), m_logger(LoggerFactory::getLogger("file.logger")), 
+			m_assets(), m_resources()
 	{
 		// Empty.
+	}
+
+	IAssetFactory::~IAssetFactory()
+	{
+		// Iterate through all the retained assets and delete them.
+		for (auto& asset : m_assets)
+		{
+			// Delete the shader program.
+			delete asset.second;
+		}
 	}
 	
 	//====================
@@ -68,6 +80,29 @@ namespace pegasus
 	void IAssetFactory::setThreshold(std::size_t threshold)
 	{
 		m_threshold = threshold;
+	}
+
+	//====================
+	// Protected methods
+	//====================
+	/**********************************************************/
+	void IAssetFactory::checkThreshold()
+	{
+		if (m_assets.size() > m_threshold)
+		{
+			for (auto itr = m_assets.cbegin(); itr != m_assets.cend();)
+			{
+				if (!(*itr).second->isReferenced())
+				{
+					delete (*itr).second;
+					itr = m_assets.erase(itr);
+				}
+				else
+				{
+					++itr;
+				}
+			}
+		}
 	}
 	
 } // namespace pegasus

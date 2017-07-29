@@ -36,6 +36,7 @@
 #include <pegasus/utilities/singleton.hpp> // Inherits from the singleton class.
 #include <pegasus/utilities/iasset_factory.hpp> // Contains a list of factories.
 #include <pegasus/utilities/exceptions/no_factory_found_exception.hpp> // No factory found.
+#include <pegasus/core/resource_handle.hpp> // Returning handles to different resources.
 
 namespace pegasus
 {
@@ -90,7 +91,7 @@ namespace pegasus
          * the asset type.
          */
         template <typename T>
-        T* get(const std::string& name) const;
+        ResourceHandle<T> get(const std::string& name) const;
 
         //==================== 
         // Methods
@@ -109,7 +110,7 @@ namespace pegasus
          * @throws std::runtime_error If the factory has already been registered
          * or is equal to nullptr.
          */
-        void registerFactory(IAssetFactory* pFactory);
+        void registerFactory(std::unique_ptr<IAssetFactory>&& factory);
         
         /**
          * @brief Registers a factory with the manager with the factory class type.
@@ -134,7 +135,7 @@ namespace pegasus
     //==================== 
     /**********************************************************/
     template <typename T>
-    T* ResourceManager::get(const std::string& name) const
+    ResourceHandle<T> ResourceManager::get(const std::string& name) const
     {
         // Search the factories.
         auto itr = m_factories.find(typeid(T));
@@ -145,7 +146,7 @@ namespace pegasus
         }
 
         // Attempt to load the resource with the factory.
-        return static_cast<T*>(itr->second->load(name));
+        return ResourceHandle<T>(static_cast<T*>(itr->second->load(name)));
     } 
  
     //==================== 

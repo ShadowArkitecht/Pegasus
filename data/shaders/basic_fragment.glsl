@@ -25,7 +25,16 @@
 //====================
 // Uniform variables
 //====================
-uniform vec4 u_colour;
+uniform sampler2D u_texture;
+
+//====================
+// Interfaces
+//====================
+in VS_OUT 
+{
+	vec2 uv_coords;
+
+} fs_in;
 
 //====================
 // Out variables
@@ -37,6 +46,8 @@ out vec4 diffuse_colour;
 //====================
 void main()
 {
+	// Create the diffuse texture and map it to the rendering context.
+	vec4 diffuse_texture = texture2D(u_texture, fs_in.uv_coords);
 	// Set the diffuse colour of the fragment and output it.
-	diffuse_colour = u_colour;
+	diffuse_colour = vec4(diffuse_texture.rgb, 1.0);
 }

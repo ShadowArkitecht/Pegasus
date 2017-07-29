@@ -19,29 +19,16 @@
 -- 3. This notice may not be removed or altered from any source distribution.
 
 Resources = {
-    -- TODO(Ben): Bind the asset types.
-    -- Test asset.
-    {
-        name = "asset.text.test",
-        source = "assets/test.txt"
-    },
     -- Textures
     {
-        name = "asset.texture.diffuse",
-        source = "assets/textures/basic_diffuse_texture.lua"
-    },
-    {
-        name = "asset.texture.specular",
-        source = "assets/textures/basic_specular.lua"
+        name = "asset.texture.basic",
+        source = "assets/textures/basic_texture.lua",
+        asset_type = AssetType.Texture
     },
     -- Shaders
     {
         name = "asset.shader.basic",
-        source = "assets/shaders/basic_shader.lua"
-    },
-    -- Materials
-    {
-        name = "asset.material.basic",
-        source = "assets/materials/basic_material.lua"
+        source = "assets/shaders/basic_shader.lua",
+        asset_type = AssetType.Shader
     }
 }

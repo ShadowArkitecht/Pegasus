@@ -24,6 +24,7 @@
 // Pegasus includes
 //====================
 #include <pegasus/scripting/scripting_manager.hpp> // ScriptingManager class declaration.
+#include <pegasus/core/asset.hpp>                  // Binding the asset enum and class.
 #include <pegasus/graphics/gl.hpp>                 // Binding specific graphics API objects.
 
 namespace pegasus
@@ -37,18 +38,55 @@ namespace pegasus
 	{
 		m_state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::table, sol::lib::debug);
 		// Bind the different classes/objects/enums.
+		// Core library.
+		this->bindAssetType();
+		// Graphics library.
 		this->bindShaderType();
+		this->bindTextureType();
+		this->bindFilterType();
+		this->bindWrapType();
 	}
 
 	//====================
 	// Private methods
 	//====================
 	/**********************************************************/
+	void ScriptingManager::bindAssetType()
+	{
+		m_state.new_enum("AssetType",
+			"Shader", eAssetType::SHADER,
+			"Texture", eAssetType::TEXTURE);
+	}
+
+	/**********************************************************/
 	void ScriptingManager::bindShaderType()
 	{
 		m_state.new_enum("ShaderType",
 			"Vertex", gl::eShaderType::VERTEX,
 			"Fragment", gl::eShaderType::FRAGMENT);
+	}
+
+	/**********************************************************/
+	void ScriptingManager::bindTextureType()
+	{
+		m_state.new_enum("TextureType",
+			"Texture2D", gl::eTextureType::TEXTURE_2D);
+	}
+
+	/**********************************************************/
+	void ScriptingManager::bindFilterType()
+	{
+		m_state.new_enum("FilterType",
+			"Nearest", gl::eFilterType::NEAREST,
+			"Linear", gl::eFilterType::LINEAR);
+	}
+
+	/**********************************************************/
+	void ScriptingManager::bindWrapType()
+	{
+		m_state.new_enum("WrapType",
+			"Repeat", gl::eWrapType::REPEAT,
+			"Clamp", gl::eWrapType::CLAMP);
 	}
 
 	//====================

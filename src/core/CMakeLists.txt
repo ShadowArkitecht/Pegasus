@@ -28,6 +28,7 @@ set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/core")
 set(HEADER_FILES "${INCLUDE_DIR}/asset.hpp" 
                  "${INCLUDE_DIR}/config_file.hpp"
                  "${INCLUDE_DIR}/context.hpp"
+                 "${INCLUDE_DIR}/resource_handle.hpp"
                  "${INCLUDE_DIR}/resource_manager.hpp"
                  "${INCLUDE_DIR}/resources.hpp"
                  "${INCLUDE_DIR}/window.hpp")

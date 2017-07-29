@@ -76,10 +76,45 @@ namespace pegasus
 		 * @brief Binds the shader type enum to the scripting interface.
 		 * 
 		 * This method is invoked when the scripting API is first instantiated, it will bind
+		 * the eAssetType enum to the scripts so that it can be used within the Resources.lua.
+		 */
+		void bindAssetType();
+
+		/**
+		 * @brief Binds the shader type enum to the scripting interface.
+		 * 
+		 * This method is invoked when the scripting API is first instantiated, it will bind
 		 * the eShaderType enum to the scripts so that it can be used within the serialized
 		 * shader program tables.
 		 */
 		void bindShaderType();
+
+		/**
+		 * @brief Binds the textue type enum to the scripting interface.
+		 * 
+		 * This method is invoked when the scripting API is first instantiated, it will bind
+		 * the eTextureType enum to the scripts so that it can be used within the serialized
+		 * texture tables.
+		 */
+		void bindTextureType();
+
+		/**
+		 * @brief Binds the textue type enum to the scripting interface.
+		 * 
+		 * This method is invoked when the scripting API is first instantiated, it will bind
+		 * the eFilterType enum to the scripts so that it can be used within the serialized
+		 * texture tables.
+		 */
+		void bindFilterType();
+
+		/**
+		 * @brief Binds the textue type enum to the scripting interface.
+		 * 
+		 * This method is invoked when the scripting API is first instantiated, it will bind
+		 * the wWrapType enum to the scripts so that it can be used within the serialized
+		 * texture tables.
+		 */
+		void bindWrapType();
 
 	public:
 		//====================

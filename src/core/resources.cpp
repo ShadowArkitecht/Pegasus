@@ -36,7 +36,7 @@ namespace pegasus
 	//====================
 	// Static declaration.
 	//====================
-	std::unordered_map<std::string, std::string> Resources::m_resources;
+	std::unordered_map<std::string, Resource_t> Resources::m_resources;
 	ISerializableService* Resources::m_pService;
 
 	//====================
@@ -49,7 +49,7 @@ namespace pegasus
 	}
 
 	/**********************************************************/
-	std::string Resources::get(const std::string& name) const
+	const Resource_t& Resources::get(const std::string& name) const
 	{
 		auto itr = m_resources.find(name);
 		if (itr == m_resources.end())

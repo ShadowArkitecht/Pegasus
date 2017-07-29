@@ -20,33 +20,24 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _PEGASUS_BUFFER_DESCRIPTION_HPP_
-#define _PEGASUS_BUFFER_DESCRIPTION_HPP_
+#ifndef _PEGASUS_RESOURCE_HPP_
+#define _PEGASUS_RESOURCE_HPP_
 
-//====================
+//==================== 
 // Pegasus includes
-//====================
-#include <pegasus/graphics/gl.hpp> // Include definitions for GL enum types.
+//==================== 
+#include <pegasus/core/asset.hpp> // Storing the asset type flag.
 
 namespace pegasus
 {
-	//====================
-	// Structures
-	//====================
-	struct BufferDescription_t
+	struct Resource_t
 	{
-		/** The type of buffer that is to be bound. */
-		gl::eBufferType bufferType;
-		/** Whether the drawing command will be static or dynamic. */
-		gl::eDrawType drawType;
-		/** The size of the data being described. */
-		GLuint stride;
-		/** The total amount of data to populate the buffer with. */
-		GLuint size;
-		/** A reference to the data itself being added to the buffer.*/
-		void* pData;
+		/** Stores the path/file location of the resource. */
+		std::string path;
+		/** The type of resource that has been loaded. */
+		eAssetType  type;
 	};
 
 } // namespace pegasus
 
-#endif//_PEGASUS_BUFFER_DESCRIPTION_HPP_
+#endif//_PEGASUS_RESOURCE_HPP_

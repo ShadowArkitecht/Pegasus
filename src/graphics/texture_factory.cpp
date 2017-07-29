@@ -23,9 +23,9 @@
 //====================
 // Pegasus includes
 //====================
-#include <pegasus/graphics/shader_program_factory.hpp>            // Class declaration.
-#include <pegasus/graphics/shader_program.hpp>                    // Loading in and storing shader programs.
-#include <pegasus/utilities/logger_factory.hpp>                   // Retrieving the log file.
+#include <pegasus/graphics/texture_factory.hpp>                   // Class declaration.
+#include <pegasus/graphics/texture.hpp>                           // Loading in and storing shader programs.
+#include <pegasus/utilities/logger.hpp>                           // Logging messages within factories.
 #include <pegasus/utilities/exceptions/serialize_exception.hpp>   // Catching any thrown serialize exceptions.
 #include <pegasus/utilities/exceptions/no_resource_exception.hpp> // Catching any thrown resource exceptions.
 
@@ -35,17 +35,17 @@ namespace pegasus
 	// Ctors and dtor
 	//====================
 	/**********************************************************/
-	ShaderProgramFactory::ShaderProgramFactory()
-		: IAssetFactory(typeid(ShaderProgram))
+	TextureFactory::TextureFactory()
+		: IAssetFactory(typeid(Texture))
 	{
-		m_logger.debug("ShaderProgramFactory constructed.");
+		m_logger.debug("TextureFactory constructed.");
 	}
 
 	//====================
 	// Methods
 	//====================
 	/**********************************************************/
-	Asset* ShaderProgramFactory::load(const std::string& name) // override
+	Asset* TextureFactory::load(const std::string& name) // override
 	{
 		// Check the threshold, and delete any non-referenced objects.
 		this->checkThreshold();
@@ -53,36 +53,36 @@ namespace pegasus
 		try
 		{
 			Resource_t resource = m_resources.get(name);
-			// See if the shader being requested has already been loaded.
+			// See if the texture being requested has already been loaded.
 			auto itr = m_assets.find(resource.path);
 			// It has been found, return a copy of that object.
 			if (itr != m_assets.end())
 			{
 				return itr->second;
 			}
-			// De-serialize and create a new shader program.
-			auto shader = this->getService()->deserialize(eAssetType::SHADER, resource.path);
-			// Insert the shader into the map.
-			m_assets.insert({ resource.path, shader });
-			// Return the new shader program.
-			return shader;
+			// De-serialize and create a new texture.
+			auto texture = this->getService()->deserialize(eAssetType::TEXTURE, resource.path);
+			// Insert the texture into the map.
+			m_assets.insert({ resource.path, texture });
+			// Return the new texture.
+			return texture;
 		}
 		catch (SerializeException& e)
 		{
-			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
-			return ShaderProgram::getDefault();
+			m_logger.warning("TextureFactory:", e.what(), ". Returning default texture asset.");
+			return Texture::getDefault();
 		}
 		// Catch a wrong resource and return the default.
 		catch (NoResourceException& e)
 		{
-			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
-			return ShaderProgram::getDefault();
+			m_logger.warning("TextureFactory:", e.what(), ". Returning default texture asset.");
+			return Texture::getDefault();
 		}
 		// Might aswell catch all, incase there's any problems that we're not expected.
 		catch (std::exception& e)
 		{
-			m_logger.warning("ShaderProgramFactory:", e.what(), ". Returning default shader asset.");
-			return ShaderProgram::getDefault();
+			m_logger.warning("TextureFactory:", e.what(), ". Returning default texture asset.");
+			return Texture::getDefault();
 		}
 	}
 

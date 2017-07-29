@@ -36,7 +36,11 @@ namespace pegasus
     enum class eAssetType
     {
         /** Asset type is a shader program. */
-        SHADER
+        SHADER,
+        /** Asset type is a texture. */
+        TEXTURE,
+		/** Represents an erroneous asset type. */
+		NONE
     };
 
     class Asset

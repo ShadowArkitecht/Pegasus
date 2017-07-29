@@ -74,7 +74,7 @@ namespace pegasus
 		 * 
 		 * @param filename The file location of the Resources.xml file.
 		 */
-		std::unordered_map<std::string, std::string> deserializeResources(const std::string& filename) const override;
+		std::unordered_map<std::string, Resource_t> deserializeResources(const std::string& filename) const override;
 	};
 
 } // namespace pegasus

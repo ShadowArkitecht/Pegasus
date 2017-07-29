@@ -46,16 +46,16 @@ namespace pegasus
     // Methods
     //==================== 
     /**********************************************************/
-    void ResourceManager::registerFactory(IAssetFactory* pFactory)
+    void ResourceManager::registerFactory(std::unique_ptr<IAssetFactory>&& factory)
     {
         // If the factory is null, throw an exception.
-        if (pFactory == nullptr)
+        if (factory.get() == nullptr)
         {
             throw std::runtime_error("Attempted to register a null factory.");
         }
 
         // Look to see if the factory has already been registered.
-        auto itr = m_factories.find(pFactory->getType());
+        auto itr = m_factories.find(factory->getType());
         // The factory has already been registered, throw an exception.
         if (itr != m_factories.end())
         {
@@ -63,7 +63,7 @@ namespace pegasus
         }
 
         // Register the factory with the manager.
-        m_factories.insert({ pFactory->getType(), std::unique_ptr<IAssetFactory>(pFactory) });
+		m_factories.insert({ factory->getType(), std::move(factory) });
     }
 
 } // namespace pegasus

@@ -69,6 +69,16 @@ major_version : uint = 4
 minor_version : uint = 0
 
 
+# The Resources section controls the amount of resources to retain throughout the program's life-time. It is used to 
+# control the thresholds of different factories. The threshold defines how many objects will be retained until the factories
+# will start de-allocating resources. 
+[Resources]
+# The amount of shaders that will be retained until resources will start to be de-allocated.
+shader_threshold : uint = 10
+# The amount of textures that will be retained until resources will start to be de-allocated.
+texture_threshold : uint = 10
+
+
 # The serialization header controls how specific data and objects are de-serialized into a format that the Pegasus Engine can utilise.
 # There are three different serialization formats provided:
 #

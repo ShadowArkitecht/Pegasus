@@ -26,9 +26,10 @@
 //====================
 // C++ includes
 //====================
-#include <memory> // The serializable service is stored as a smart pointer.
-#include <typeindex> // Stores the type the factory is registered with.
-#include <string> // Retrieving assets from the resource name.
+#include <unordered_map> // Storing a list of assets.
+#include <memory>        // The serializable service is stored as a smart pointer.
+#include <typeindex>     // Stores the type the factory is registered with.
+#include <string>        // Retrieving assets from the resource name.
 
 //==================== 
 // Pegasus includes
@@ -42,6 +43,7 @@ namespace pegasus
 	//====================
 	// Forward declarations.
 	//====================
+	class Logger;
     class Asset;
 
 	/**
@@ -64,7 +66,7 @@ namespace pegasus
 	 * 
 	 * An implementation of the IAssetFactory abstract class is provided with the TextureFactory class. 
 	 */
-	class IAssetFactory : public NonCopyable
+	class IAssetFactory : NonCopyable
 	{
 	private:
 		//====================
@@ -78,8 +80,27 @@ namespace pegasus
 	    std::size_t           m_threshold;
 	
 	protected:
+		/** Logging the details of the factory. */
+		Logger& m_logger;
+		/** Store the assets within a map for quick retrieval. */
+		std::unordered_map<std::string, Asset*> m_assets;
 		/** Loading file locations from the Resources.xxx file. */
 		Resources m_resources;
+
+	protected:
+		//====================
+		// Protected methods
+		//====================
+		/**
+		 * @brief Checks the assets within the map, and erases those not being used.
+		 * 
+		 * When the threshold is checked, if the size of the amount of assets being retained
+		 * is greater than the threshold, it will loop through the map and delete and remove
+		 * any assets that are no longer referenced by any objects.
+		 * 
+		 * This method is invoked each time a asset is requested from the factory.
+		 */
+		void checkThreshold();
 
 	private:
 		//====================
@@ -122,9 +143,12 @@ namespace pegasus
 	    explicit IAssetFactory(const std::type_index& type, std::size_t threshold = 10);
 	    
 	    /**
-	     * @brief Default destructor.
+	     * @brief Destructor for the asset factory.
+		 *
+		 * The destructor will de-allocate all of the assets retained within the factory. The destructor for the factories
+		 * is only called when the application ends.
 	     */
-	    virtual ~IAssetFactory() = default;
+	    virtual ~IAssetFactory();
 	    
 	    //====================
 		// Getters and setters
